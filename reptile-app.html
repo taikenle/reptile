@@ -2,405 +2,368 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="爬宠管理">
-<meta name="theme-color" content="#1b5e20">
+<meta name="theme-color" content="#2e7d32">
 <link rel="manifest" href="manifest.json">
 <title>爬宠饲养管理</title>
 <style>
-:root{--p:#2e7d32;--p2:#1b5e20;--bg:#f0f4f0;--ca:#fff;--tx:#333;--g:#888;--bd:#dce4dc;--d:#c62828;--w:#f57f17;--nav-bg:#fff;--hd-bg:#2e7d32;--hd-tx:#fff;--kb-bg:#f5f5f5;--row-alt:#fafafa;--sc-bg:#e0e0e0}
-.dark{--p:#4caf50;--p2:#388e3c;--bg:#121212;--ca:#1e1e1e;--tx:#e0e0e0;--g:#999;--bd:#333;--d:#ef5350;--w:#ffb300;--nav-bg:#1e1e1e;--hd-bg:#1b5e20;--hd-tx:#fff;--kb-bg:#252525;--row-alt:#252525;--sc-bg:#333}
+:root{--p:#2e7d32;--d:#c62828;--bg:#f0f4f0;--ca:#fff;--tx:#333;--g:#888;--bd:#dce4dc;--sc:#e0e0e0}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--tx);margin:0 auto;min-height:100vh;padding-bottom:80px;-webkit-tap-highlight-color:transparent}
-header{background:var(--hd-bg);color:var(--hd-tx);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;font-size:15px;font-weight:bold}
-.ua{font-size:11px;font-weight:normal;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:12px;cursor:pointer}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav-bg);display:flex;border-top:1px solid var(--bd);z-index:10;overflow-x:auto;-webkit-overflow-scrolling:touch}
-nav a{flex-shrink:0;text-align:center;padding:7px 3px;font-size:9px;color:var(--g);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:48px}
-nav a.active{color:var(--p)}nav a .ico{font-size:17px}
+header{background:var(--p);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;font-size:15px;font-weight:bold}
+header span{font-size:12px;font-weight:normal;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:12px;cursor:pointer}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid var(--bd);z-index:10;overflow-x:auto}
+nav a{flex-shrink:0;text-align:center;padding:8px 3px;font-size:9px;color:var(--g);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:48px}
+nav a.active{color:var(--p)}nav a span{font-size:18px}
 .page{display:none;padding:10px}.page.active{display:block}
-.card{background:var(--ca);border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}.card h3{font-size:14px;margin-bottom:8px;color:var(--p)}
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.kpi{background:var(--ca);border-radius:10px;padding:10px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}.kpi .val{font-size:20px;font-weight:bold;color:var(--p)}.kpi .lbl{font-size:10px;color:var(--g);margin-top:2px}
+.card{background:var(--ca);border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card h3{font-size:14px;margin-bottom:8px;color:var(--p)}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.kpi{background:var(--ca);border-radius:10px;padding:10px;text-align:center}
+.kpi .v{font-size:20px;font-weight:bold;color:var(--p)}.kpi .l{font-size:10px;color:var(--g)}
 .btn{display:inline-block;padding:8px 14px;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500;touch-action:manipulation}
-.btn-p{background:var(--p);color:#fff}.btn-d{background:var(--d);color:#fff}.btn-sm{padding:5px 10px;font-size:10px;min-height:32px}.btn-block{display:block;width:100%}.btn-lg{padding:14px;font-size:15px;border-radius:12px}.btn-o{border:1px solid var(--p);color:var(--p);background:transparent}
-input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:14px;margin-bottom:8px;font-family:inherit;background:var(--ca);color:var(--tx)}
-textarea{resize:vertical;min-height:50px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:5px 3px;text-align:center;border-bottom:1px solid var(--bd)}th{background:var(--kb-bg);font-weight:600}
-.chart-wrap{position:relative;height:200px;margin:8px 0}
-.badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}
-.bg{background:#c8e6c9;color:#2e7d32}.by{background:#fff9c4;color:#f57f17}.br{background:#ffcdd2;color:#c62828}.bb{background:#bbdefb;color:#1565c0}
-.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}.modal.show{display:flex}
+.btn-p{background:var(--p);color:#fff}.btn-d{background:var(--d);color:#fff}.btn-s{padding:5px 10px;font-size:10px}.btn-b{display:block;width:100%}.btn-lg{padding:14px;font-size:16px;border-radius:12px}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;font-size:14px;margin-bottom:8px;font-family:inherit;background:var(--ca);color:var(--tx)}textarea{resize:vertical;min-height:50px}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:5px 3px;text-align:center;border-bottom:1px solid var(--bd)}th{background:#f5f5f5}
+.badge{padding:2px 8px;border-radius:10px;font-size:10px}.bg{background:#c8e6c9;color:#2e7d32}.by{background:#fff9c4;color:#f57f17}.br{background:#ffcdd2;color:#c62828}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:100}.modal.show{display:flex;align-items:flex-end;justify-content:center}
 .mc{background:var(--ca);width:100%;max-width:500px;max-height:85vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:16px}
-.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--g);padding:4px}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--g)}
 .empty{text-align:center;color:var(--g);padding:30px 20px;font-size:12px}
 .fb{display:flex;justify-content:space-between;align-items:center}.mt8{margin-top:8px}.mb8{margin-bottom:8px}
-.tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;margin:1px}
+.tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px}
 .sr{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bd);cursor:pointer}
 .er{color:var(--d);font-size:12px;margin-bottom:8px;display:none}
-.score-bar{height:8px;border-radius:4px;background:var(--sc-bg);margin:4px 0;overflow:hidden}.score-fill{height:100%;border-radius:4px;transition:width .5s}
-.pet-avatar{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--sc-bg);flex-shrink:0}
-.notify-banner{background:#fff3cd;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;display:flex;align-items:center;gap:8px}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s}.toast.show{opacity:1}
-.switch-label{display:flex;align-items:center;gap:8px}.switch{width:44px;height:24px;background:var(--sc-bg);border-radius:12px;position:relative;transition:background .3s}.switch.on{background:var(--p)}.switch::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .3s}.switch.on::after{left:22px}
-.chip-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}.chip{padding:4px 10px;border-radius:14px;font-size:11px;background:var(--kb-bg);border:1px solid var(--bd);cursor:pointer;transition:all .2s}.chip.active{background:var(--p);color:#fff;border-color:var(--p)}
+.chip-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.chip{padding:4px 10px;border-radius:14px;font-size:11px;background:#f5f5f5;border:1px solid var(--bd);cursor:pointer}
+.chip.active{background:var(--p);color:#fff;border-color:var(--p)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s}.toast.show{opacity:1}
+.switch{width:44px;height:24px;background:var(--sc);border-radius:12px;position:relative;transition:background .3s}.switch.on{background:var(--p)}.switch::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .3s}.switch.on::after{left:22px}
+.chart-wrap{position:relative;height:200px;margin:8px 0}
 @media(min-width:600px){body{border-left:1px solid var(--bd);border-right:1px solid var(--bd)}}
 </style>
 </head>
 <body>
 
-<div id="login-s" style="display:none;padding:20px;text-align:center">
-  <div style="font-size:56px;margin:30px 0 10px">🦎</div><h2>爬宠饲养管理</h2>
+<div id="ls" style="padding:20px;text-align:center">
+  <div style="font-size:56px;margin:30px 0 10px">🦎</div>
+  <h2>爬宠饲养管理</h2>
   <p style="color:var(--g);font-size:13px;margin-bottom:20px">输入密码登录</p>
   <select id="lu" style="margin-bottom:10px"><option value="">选择用户</option></select>
-  <input id="lp" type="password" placeholder="输入密码"><div class="er" id="le"></div>
-  <button class="btn btn-p btn-block btn-lg" onclick="doL()">登 录</button>
+  <input id="lp" type="password" placeholder="输入密码">
+  <div class="er" id="le"></div>
+  <button class="btn btn-p btn-b btn-lg" onclick="dL()">登 录</button>
   <div style="margin-top:14px;font-size:12px"><a href="javascript:void(0)" onclick="sR()" style="color:var(--p)">创建新用户</a> <span style="color:var(--g)">|</span> <a href="javascript:void(0)" onclick="sPH()" style="color:var(--g)">忘记密码?</a></div>
 </div>
 
-<div id="app-s" style="display:none">
-<header><span>🐍 爬宠管理</span><span class="ua" onclick="sM()">👤 <span id="hu"></span></span></header>
+<div id="as" style="display:none">
+<header>🐍 爬宠管理 <span onclick="sM()">👤 <b id="hu"></b></span></header>
 <main>
 <div class="page active" id="pg-dash">
-  <div class="notify-banner" id="nb" style="display:none"><span>🔔</span><span id="nm"></span><button class="btn btn-sm btn-p" onclick="eN()" style="margin-left:auto;white-space:nowrap">开启提醒</button></div>
-  <div class="card"><h3>📊 数据概览</h3><div class="kpi-row"><div class="kpi"><div class="val" id="kt">0</div><div class="lbl">宠物</div></div><div class="kpi"><div class="val" id="ku">0</div><div class="lbl">需关注</div></div><div class="kpi"><div class="val" id="ks">0</div><div class="lbl">积分</div></div></div></div>
+  <div class="card"><h3>📊 数据概览</h3><div class="kpi-row"><div class="kpi"><div class="v" id="kt">0</div><div class="l">宠物</div></div><div class="kpi"><div class="v" id="ku">0</div><div class="l">需关注</div></div><div class="kpi"><div class="v" id="ks">0</div><div class="l">积分</div></div></div></div>
   <div class="card"><h3>⚠ 提醒</h3><div id="rl"><div class="empty">一切正常</div></div></div>
-  <div class="card"><h3>⭐ 积分等级</h3><div id="sc"></div></div>
-  <div class="card"><h3>📅 本月统计</h3><div id="mst"></div></div>
+  <div class="card"><h3>📅 本月</h3><div id="mst"></div></div>
 </div>
-<div class="page" id="pg-pets">
-  <div class="fb mb8"><h3 style="margin:0">🐍 宠物档案</h3><div><button class="btn btn-p btn-sm" onclick="sPM()">+ 添加</button></div></div>
-  <div class="chip-row mb8" id="pet-tags"></div><div id="pl"><div class="empty">还没有添加宠物</div></div>
-</div>
-<div class="page" id="pg-growth">
-  <div class="fb mb8"><h3 style="margin:0">📈 生长曲线</h3><div><input type="date" id="gd1" style="width:105px;margin:0 2px;display:inline" onchange="loadGD()"><span style="font-size:11px">-</span><input type="date" id="gd2" style="width:105px;margin:0 2px;display:inline" onchange="loadGD()"></div></div>
-  <div class="chip-row mb8" id="gps"><span class="chip active" onclick="loadGD()">全部</span></div>
-  <div class="card"><div class="chart-wrap"><canvas id="gc"></canvas></div></div>
-  <div class="fb mb8"><span style="font-weight:600">体重记录</span><button class="btn btn-p btn-sm" onclick="sWM()">+ 记录</button></div><div id="wl"><div class="empty">暂无</div></div>
-</div>
-<div class="page" id="pg-health">
-  <div class="fb mb8"><h3 style="margin:0">🏥 健康管理</h3><button class="btn btn-p btn-sm" onclick="sHM()">+ 记录</button></div>
-  <div class="card"><div class="chart-wrap"><canvas id="hc"></canvas></div></div><div id="hl"><div class="empty">暂无</div></div>
-</div>
-<div class="page" id="pg-feed">
-  <div class="fb mb8"><h3 style="margin:0">🍽 喂食记录</h3><div><button class="btn btn-p btn-sm" onclick="sFM()">+ 单条</button><button class="btn btn-sm btn-o" onclick="sFBM()" style="margin-left:4px">+ 批量</button></div></div>
-  <div class="card" style="font-size:12px"><strong>快捷模板：</strong><span id="feed-tpls"></span></div><div id="fl"><div class="empty">暂无</div></div>
-</div>
-<div class="page" id="pg-shed">
-  <div class="fb mb8"><h3 style="margin:0">🦎 蜕皮记录</h3><button class="btn btn-p btn-sm" onclick="sSM()">+ 记录</button></div><div id="sl"><div class="empty">暂无</div></div>
-</div>
-<div class="page" id="pg-custom">
-  <div class="fb mb8"><h3 style="margin:0">📋 自定义台账</h3><button class="btn btn-p btn-sm" onclick="sCM()">+ 记录</button></div>
-  <div class="chip-row mb8" id="custom-tabs"><span class="chip active" data-type="defecation" onclick="swCT('defecation',this)">💩 排便</span><span class="chip" data-type="medication" onclick="swCT('medication',this)">💊 用药</span><span class="chip" data-type="environment" onclick="swCT('environment',this)">🌡 环境</span><span class="chip" data-type="substrate" onclick="swCT('substrate',this)">🪹 垫材</span></div>
-  <div id="cl"><div class="empty">暂无记录</div></div>
-</div>
-<div class="page" id="pg-breeding">
-  <div class="fb mb8"><h3 style="margin:0">🥚 繁育管理</h3><button class="btn btn-p btn-sm" onclick="sBRM()">+ 记录</button></div>
-  <div class="chip-row mb8" id="breeding-tabs"><span class="chip active" data-type="pairing" onclick="swBT('pairing',this)">💕 配对</span><span class="chip" data-type="egg" onclick="swBT('egg',this)">🥚 产卵</span><span class="chip" data-type="incubation" onclick="swBT('incubation',this)">🐣 孵化</span></div>
-  <div id="bl"><div class="empty">暂无记录</div></div>
-</div>
+<div class="page" id="pg-pets"><div class="fb mb8"><h3 style="margin:0">🐍 宠物</h3><button class="btn btn-p btn-s" onclick="sPM()">+ 添加</button></div><div class="chip-row mb8" id="pet-tags"></div><div id="pl"><div class="empty">还没有宠物</div></div></div>
+<div class="page" id="pg-growth"><div class="fb mb8"><h3 style="margin:0">📈 生长曲线</h3><div><input type="date" id="gd1" style="width:105px;display:inline;margin:0 2px" onchange="loadGD()"><input type="date" id="gd2" style="width:105px;display:inline;margin:0 2px" onchange="loadGD()"></div></div><div class="chip-row mb8" id="gps"><span class="chip active" onclick="loadGD()">全部</span></div><div class="card"><div class="chart-wrap"><canvas id="gc"></canvas></div></div><div class="fb mb8"><span style="font-weight:600">体重记录</span><button class="btn btn-p btn-s" onclick="sWM()">+ 记录</button></div><div id="wl"><div class="empty">暂无</div></div></div>
+<div class="page" id="pg-health"><div class="fb mb8"><h3 style="margin:0">🏥 健康</h3><button class="btn btn-p btn-s" onclick="sHM()">+ 记录</button></div><div class="card"><div class="chart-wrap"><canvas id="hc"></canvas></div></div><div id="hl"><div class="empty">暂无</div></div></div>
+<div class="page" id="pg-feed"><div class="fb mb8"><h3 style="margin:0">🍽 喂食</h3><div><button class="btn btn-p btn-s" onclick="sFM()">+ 单条</button><button class="btn btn-s" style="border:1px solid var(--p);color:var(--p)" onclick="sFBM()">+ 批量</button></div></div><div class="card" style="font-size:12px"><strong>快捷模板：</strong><span id="feed-tpls"></span></div><div id="fl"><div class="empty">暂无</div></div></div>
+<div class="page" id="pg-shed"><div class="fb mb8"><h3 style="margin:0">🦎 蜕皮</h3><button class="btn btn-p btn-s" onclick="sSM()">+ 记录</button></div><div id="sl"><div class="empty">暂无</div></div></div>
+<div class="page" id="pg-custom"><div class="fb mb8"><h3 style="margin:0">📋 台账</h3><button class="btn btn-p btn-s" onclick="sCM()">+ 记录</button></div><div class="chip-row mb8" id="custom-tabs"><span class="chip active" data-type="defecation" onclick="swCT('defecation',this)">排便</span><span class="chip" data-type="medication" onclick="swCT('medication',this)">用药</span><span class="chip" data-type="environment" onclick="swCT('environment',this)">环境</span><span class="chip" data-type="substrate" onclick="swCT('substrate',this)">垫材</span></div><div id="cl"><div class="empty">暂无</div></div></div>
+<div class="page" id="pg-breeding"><div class="fb mb8"><h3 style="margin:0">🥚 繁育</h3><button class="btn btn-p btn-s" onclick="sBRM()">+ 记录</button></div><div class="chip-row mb8" id="breeding-tabs"><span class="chip active" data-type="pairing" onclick="swBT('pairing',this)">配对</span><span class="chip" data-type="egg" onclick="swBT('egg',this)">产卵</span><span class="chip" data-type="incubation" onclick="swBT('incubation',this)">孵化</span></div><div id="bl"><div class="empty">暂无</div></div></div>
 <div class="page" id="pg-knowledge"><div id="kc"></div></div>
 </main>
-<nav title="底部导航 - 左右滑动查看更多">
-  <a href="#dash" class="active" onclick="swT('dash',this)" title="数据概览与提醒"><span class="ico">📊</span>概览</a>
-  <a href="#pets" onclick="swT('pets',this)" title="管理宠物档案"><span class="ico">🐍</span>宠物</a>
-  <a href="#growth" onclick="swT('growth',this)" title="体重生长曲线"><span class="ico">📈</span>生长</a>
-  <a href="#health" onclick="swT('health',this)" title="健康状态追踪"><span class="ico">🏥</span>健康</a>
-  <a href="#feed" onclick="swT('feed',this)" title="喂食日志"><span class="ico">🍽</span>喂食</a>
-  <a href="#shed" onclick="swT('shed',this)" title="蜕皮记录"><span class="ico">🦎</span>蜕皮</a>
-  <a href="#custom" onclick="swT('custom',this)" title="排便/用药/环境/垫材台账"><span class="ico">📋</span>台账</a>
-  <a href="#breeding" onclick="swT('breeding',this)" title="配对/产卵/孵化"><span class="ico">🥚</span>繁育</a>
-  <a href="#knowledge" onclick="swT('knowledge',this)" title="养护知识库"><span class="ico">📚</span>知识</a>
+<nav>
+  <a href="#dash" class="active" onclick="swT('dash',this)" title="概览"><span>📊</span>概览</a>
+  <a href="#pets" onclick="swT('pets',this)" title="宠物"><span>🐍</span>宠物</a>
+  <a href="#growth" onclick="swT('growth',this)" title="生长"><span>📈</span>生长</a>
+  <a href="#health" onclick="swT('health',this)" title="健康"><span>🏥</span>健康</a>
+  <a href="#feed" onclick="swT('feed',this)" title="喂食"><span>🍽</span>喂食</a>
+  <a href="#shed" onclick="swT('shed',this)" title="蜕皮"><span>🦎</span>蜕皮</a>
+  <a href="#custom" onclick="swT('custom',this)" title="台账"><span>📋</span>台账</a>
+  <a href="#breeding" onclick="swT('breeding',this)" title="繁育"><span>🥚</span>繁育</a>
+  <a href="#knowledge" onclick="swT('knowledge',this)" title="知识"><span>📚</span>知识</a>
 </nav>
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- ========== MODALS ========== -->
-<div class="modal" id="rm"><div class="mc"><div class="mh"><h3>创建用户</h3><button class="close" onclick="closeR()">&times;</button></div>
-<input id="rn" placeholder="名字 *" maxlength="20"><input id="rp1" type="password" placeholder="密码(4位+) *" oninput="ckP()"><div class="pwd-strength" id="pb" style="height:4px;border-radius:2px;margin-bottom:8px"></div><input id="rp2" type="password" placeholder="确认密码 *"><input id="rh" placeholder="密码提示(可选)"><div class="er" id="re"></div><button class="btn btn-p btn-block btn-lg" onclick="doR()">创建账户</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeR()">取消</button></div></div>
+<!-- MODALS -->
+<div class="modal" id="rm"><div class="mc"><div class="mh"><h3>创建用户</h3><button class="close" onclick="cR()">&times;</button></div>
+<input id="rn" placeholder="名字 *" maxlength="20"><input id="rp1" type="password" placeholder="密码(4位+) *"><input id="rp2" type="password" placeholder="确认密码 *"><input id="rh" placeholder="密码提示(可选)"><div class="er" id="re"></div><button class="btn btn-p btn-b btn-lg" onclick="dR()">创建</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cR()">取消</button></div></div>
 
-<div class="modal" id="pm"><div class="mc"><div class="mh"><h3 id="pttl">添加宠物</h3><button class="close" onclick="closePM()">&times;</button></div>
+<div class="modal" id="pwd-m"><div class="mc"><div class="mh"><h3>密码找回</h3><button class="close" onclick="cPH()">&times;</button></div>
+<select id="pwd-u" onchange="onPwd()"><option value="">选择用户</option></select><div id="pwd-h" style="padding:12px;background:#f5f5f5;border-radius:8px;margin-bottom:8px;font-size:14px;display:none"></div>
+<input id="pwd-n1" type="password" placeholder="新密码(4位+)"><input id="pwd-n2" type="password" placeholder="确认新密码"><div class="er" id="pwd-e"></div>
+<button class="btn btn-p btn-b" onclick="dPR()">重设密码</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cPH()">取消</button></div></div>
+
+<div class="modal" id="mm"><div class="mc"><div class="mh"><h3>设置</h3><button class="close" onclick="cM()">&times;</button></div>
+<div style="text-align:center;padding:8px;font-size:16px;font-weight:bold" id="mun"></div>
+<div class="sr" onclick="tT()"><span>🌓 暗色模式</span><span class="switch" id="tsw"></span></div>
+<div class="sr" onclick="expD();cM()"><span>📤 导出JSON</span><span>›</span></div>
+<div class="sr" onclick="expC();cM()"><span>📊 导出CSV</span><span>›</span></div>
+<div class="sr" onclick="document.getElementById('if').click();cM()"><span>📥 导入JSON</span><span>›</span></div><input type="file" id="if" accept=".json" style="display:none" onchange="impD(event)">
+<div class="sr" onclick="sCP();cM()"><span>🔒 修改密码</span><span>›</span></div>
+<div class="sr" onclick="cMD()"><span style="color:var(--d)">🗑 清空数据</span><span>›</span></div>
+<div class="sr" onclick="dO()"><span>🚪 退出</span><span>›</span></div></div></div>
+
+<div class="modal" id="chp-m"><div class="mc"><div class="mh"><h3>修改密码</h3><button class="close" onclick="cCP()">&times;</button></div>
+<input id="chp-o" type="password" placeholder="当前密码"><input id="chp-n1" type="password" placeholder="新密码(4位+)"><input id="chp-n2" type="password" placeholder="确认新密码"><div class="er" id="chp-e"></div>
+<button class="btn btn-p btn-b" onclick="dCP()">确认</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cCP()">取消</button></div></div>
+
+<div class="modal" id="pm"><div class="mc"><div class="mh"><h3 id="pt">添加宠物</h3><button class="close" onclick="cPM()">&times;</button></div>
 <input type="hidden" id="pid"><input id="pnm" placeholder="名称/编号 *"><select id="psp"><option value="">物种</option><option>豹纹守宫</option><option>鬃狮蜥</option><option>玉米蛇</option><option>龟类</option><option>其他</option></select>
 <div class="form-row"><input id="pch" placeholder="芯片号"><input id="pbth" type="date"></div>
-<input id="ptags" placeholder="标签(逗号分隔,如:成体,繁育组A)">
-<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><img id="ppp" style="width:50px;height:50px;border-radius:10px;object-fit:cover;background:var(--sc-bg);display:none"><label class="btn btn-sm" style="background:#e3f2fd;cursor:pointer">📷 拍照/选照片<input type="file" accept="image/*" capture="environment" onchange="pPh(event)" style="display:none"></label><button class="btn btn-sm" style="background:#ffebee;display:none" id="cph" onclick="cPh()">清除</button></div>
-<input type="hidden" id="ppd"><textarea id="pnt" placeholder="备注..."></textarea>
-<button class="btn btn-p btn-block" onclick="saveP()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closePM()">取消</button></div></div>
+<input id="ptags" placeholder="标签(逗号分隔)">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><img id="ppp" style="width:50px;height:50px;border-radius:10px;object-fit:cover;background:var(--sc);display:none"><label class="btn btn-s" style="background:#e3f2fd;cursor:pointer">📷 拍照<input type="file" accept="image/*" capture="environment" onchange="pPh(event)" style="display:none"></label><button class="btn btn-s" style="background:#ffebee;display:none" id="cph-btn" onclick="cPh()">清除</button></div>
+<input type="hidden" id="ppd"><textarea id="pnt" placeholder="备注"></textarea>
+<button class="btn btn-p btn-b" onclick="saveP()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cPM()">取消</button></div></div>
 
-<div class="modal" id="wm"><div class="mc"><div class="mh"><h3>体重记录</h3><button class="close" onclick="closeWM()">&times;</button></div>
-<select id="wp"><option value="">选择宠物 *</option></select><input id="wd" type="date"><input id="wv" type="number" step="0.1" placeholder="体重(克) *"><textarea id="wnt" placeholder="备注"></textarea>
-<button class="btn btn-p btn-block" onclick="saveW()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeWM()">取消</button></div></div>
+<div class="modal" id="wm"><div class="mc"><div class="mh"><h3>体重记录</h3><button class="close" onclick="cWM()">&times;</button></div>
+<select id="wp"><option value="">选择宠物</option></select><input id="wd" type="date"><input id="wv" type="number" step="0.1" placeholder="体重(克) *"><textarea id="wnt" placeholder="备注"></textarea>
+<button class="btn btn-p btn-b" onclick="saveW()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cWM()">取消</button></div></div>
 
-<div class="modal" id="hm"><div class="mc"><div class="mh"><h3>健康记录</h3><button class="close" onclick="closeHM()">&times;</button></div>
-<select id="hp"><option value="">选择宠物 *</option></select><input id="hd" type="date"><select id="hs"><option value="健康">健康</option><option value="注意观察">注意观察</option><option value="生病">生病</option><option value="治疗中">治疗中</option></select><textarea id="hnt" placeholder="症状/处理..."></textarea>
-<button class="btn btn-p btn-block" onclick="saveH()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeHM()">取消</button></div></div>
+<div class="modal" id="hm"><div class="mc"><div class="mh"><h3>健康记录</h3><button class="close" onclick="cHM()">&times;</button></div>
+<select id="hp"><option value="">选择宠物</option></select><input id="hd" type="date"><select id="hs"><option value="健康">健康</option><option value="注意观察">注意观察</option><option value="生病">生病</option><option value="治疗中">治疗中</option></select><textarea id="hnt" placeholder="症状/处理..."></textarea>
+<button class="btn btn-p btn-b" onclick="saveH()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cHM()">取消</button></div></div>
 
-<div class="modal" id="fm"><div class="mc"><div class="mh"><h3>喂食记录</h3><button class="close" onclick="closeFM()">&times;</button></div>
-<select id="fp"><option value="">选择宠物 *</option></select><input id="fd" type="date">
-<select id="fft"><option value="">食物类型</option><option>蟋蟀</option><option>面包虫</option><option>杜比亚蟑螂</option><option>大麦虫</option><option>樱桃蟑螂</option><option>乳鼠</option><option>蔬菜</option><option>龟饲料</option></select>
+<div class="modal" id="fm"><div class="mc"><div class="mh"><h3>喂食记录</h3><button class="close" onclick="cFM()">&times;</button></div>
+<select id="fp"><option value="">选择宠物</option></select><input id="fd" type="date">
+<select id="fft"><option value="">食物类型</option><option>蟋蟀</option><option>面包虫</option><option>杜比亚蟑螂</option><option>大麦虫</option><option>乳鼠</option><option>蔬菜</option><option>龟饲料</option></select>
 <div class="form-row"><input id="fam" placeholder="数量"><select id="fca"><option value="">补钙</option><option>含D3钙粉</option><option>无D3钙粉</option><option>维生素</option><option>无</option></select></div>
 <select id="fdo"><option value="1">已完成</option><option value="0">未完成</option></select><textarea id="fnt" placeholder="备注"></textarea>
-<button class="btn btn-p btn-block" onclick="saveF()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeFM()">取消</button></div></div>
+<button class="btn btn-p btn-b" onclick="saveF()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cFM()">取消</button></div></div>
 
-<div class="modal" id="sm"><div class="mc"><div class="mh"><h3>蜕皮记录</h3><button class="close" onclick="closeSM()">&times;</button></div>
-<select id="sp"><option value="">选择宠物 *</option></select><input id="sd" type="date"><input id="sdy" type="number" placeholder="距上次蜕皮天数"><select id="sfi"><option value="0">非首次</option><option value="1">首次记录</option></select><textarea id="snt" placeholder="备注(如:蜕皮完整性)"></textarea>
-<button class="btn btn-p btn-block" onclick="saveS()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeSM()">取消</button></div></div>
+<div class="modal" id="sm"><div class="mc"><div class="mh"><h3>蜕皮记录</h3><button class="close" onclick="cSM()">&times;</button></div>
+<select id="sp"><option value="">选择宠物</option></select><input id="sd" type="date"><input id="sdy" type="number" placeholder="距上次天数"><select id="sfi"><option value="0">非首次</option><option value="1">首次记录</option></select><textarea id="snt" placeholder="备注"></textarea>
+<button class="btn btn-p btn-b" onclick="saveS()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cSM()">取消</button></div></div>
 
-<div class="modal" id="cm"><div class="mc"><div class="mh"><h3>台账记录</h3><button class="close" onclick="closeCM()">&times;</button></div>
-<input type="hidden" id="ctype" value="defecation"><select id="cp"><option value="">选择宠物 *</option></select><input id="cd" type="date">
+<div class="modal" id="cm"><div class="mc"><div class="mh"><h3>台账</h3><button class="close" onclick="cCM()">&times;</button></div>
+<input type="hidden" id="ctype" value="defecation"><select id="cp"><option value="">选择宠物</option></select><input id="cd" type="date">
 <div id="cf-d"><input id="cst" placeholder="状态(如:正常/稀便)"><textarea id="cnt" placeholder="备注"></textarea></div>
 <div id="cf-m" style="display:none"><input id="cmd" placeholder="药品名称"><input id="cmd1" placeholder="剂量"><textarea id="cmnt" placeholder="备注"></textarea></div>
 <div id="cf-e" style="display:none"><div class="form-row"><input id="ctp" type="number" step="0.1" placeholder="温度(℃)"><input id="chu" type="number" step="0.1" placeholder="湿度(%)"></div><textarea id="cent" placeholder="备注"></textarea></div>
-<div id="cf-s" style="display:none"><input id="csu" placeholder="垫材类型(如:纸粒)"><textarea id="csnt" placeholder="备注"></textarea></div>
-<button class="btn btn-p btn-block" onclick="saveC()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeCM()">取消</button></div></div>
+<div id="cf-s" style="display:none"><input id="csu" placeholder="垫材类型"><textarea id="csnt" placeholder="备注"></textarea></div>
+<button class="btn btn-p btn-b" onclick="saveC()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cCM()">取消</button></div></div>
 
-<div class="modal" id="bm"><div class="mc"><div class="mh"><h3>繁育记录</h3><button class="close" onclick="closeBM()">&times;</button></div>
+<div class="modal" id="bm"><div class="mc"><div class="mh"><h3>繁育</h3><button class="close" onclick="cBM()">&times;</button></div>
 <input type="hidden" id="btype" value="pairing"><input id="bd" type="date">
-<div id="bf-p"><select id="bp1"><option value="">选择母体 *</option></select><select id="bp2"><option value="">选择公体 *</option></select><textarea id="bnt" placeholder="备注"></textarea></div>
-<div id="bf-e" style="display:none"><select id="be1"><option value="">选择母体 *</option></select><input id="be2" type="number" placeholder="产卵数量"><input id="be3" placeholder="卵状态"><textarea id="bent" placeholder="备注"></textarea></div>
-<div id="bf-i" style="display:none"><select id="bi1"><option value="">关联产卵记录</option></select><input id="bi2" type="number" step="0.1" placeholder="孵化温度(℃)"><input id="bi3" type="number" step="0.1" placeholder="孵化湿度(%)"><input id="bi4" type="number" placeholder="孵化天数"><select id="bi5"><option value="孵化中">孵化中</option><option value="已出壳">已出壳</option><option value="失败">失败</option></select><textarea id="bint" placeholder="备注"></textarea></div>
-<button class="btn btn-p btn-block" onclick="saveB()">保存</button><button class="btn btn-block mt8" style="background:var(--sc-bg)" onclick="closeBM()">取消</button></div></div>
-
-<div class="modal" id="mm"><div class="mc"><div class="mh"><h3>设置</h3><button class="close" onclick="closeM()">&times;</button></div>
-<div style="text-align:center;padding:8px;font-size:16px;font-weight:bold" id="mun"></div>
-<div class="sr" onclick="tT()"><span>🌓 暗色模式</span><span class="switch" id="tsw"></span></div>
-<div class="sr" onclick="tSM()"><span>📱 极简模式</span><span class="switch" id="ssw"></span></div>
-<div class="sr" onclick="expD();closeM()"><span>📤 导出JSON备份</span><span>›</span></div>
-<div class="sr" onclick="expC();closeM()"><span>📊 导出CSV表格</span><span>›</span></div>
-<div class="sr" onclick="document.getElementById('if').click();closeM()"><span>📥 导入JSON恢复</span><span>›</span></div>
-<input type="file" id="if" accept=".json" style="display:none" onchange="impD(event)">
-<div class="sr" onclick="autoB();closeM()"><span>💾 立即备份</span><span>›</span></div>
-<div class="sr" onclick="sCP()"><span>🔒 修改密码</span><span>›</span></div>
-<div class="sr" onclick="cMD()"><span style="color:var(--d)">🗑 清空我的数据</span><span>›</span></div>
-<div class="sr" onclick="doO()"><span>🚪 退出登录</span><span>›</span></div>
-<div class="sr" onclick="delA()"><span style="color:var(--d)">❌ 注销账户</span><span>›</span></div></div></div>
+<div id="bf-p"><select id="bp1"><option value="">母体</option></select><select id="bp2"><option value="">公体</option></select><textarea id="bnt" placeholder="备注"></textarea></div>
+<div id="bf-e" style="display:none"><select id="be1"><option value="">母体</option></select><input id="be2" type="number" placeholder="产卵数量"><input id="be3" placeholder="卵状态"><textarea id="bent" placeholder="备注"></textarea></div>
+<div id="bf-i" style="display:none"><select id="bi1"><option value="">产卵记录</option></select><input id="bi2" type="number" step="0.1" placeholder="孵化温度℃"><input id="bi3" type="number" step="0.1" placeholder="孵化湿度%"><input id="bi4" type="number" placeholder="孵化天数"><select id="bi5"><option value="孵化中">孵化中</option><option value="已出壳">已出壳</option><option value="失败">失败</option></select><textarea id="bint" placeholder="备注"></textarea></div>
+<button class="btn btn-p btn-b" onclick="saveB()">保存</button><button class="btn btn-b mt8" style="background:var(--sc)" onclick="cBM()">取消</button></div></div>
 
 <script>
-// === Crypto ===
-async function sha(t){const d=new TextEncoder().encode(t),h=await crypto.subtle.digest('SHA-256',d);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+// ===== DB =====
+let db,uid=null;
+function oDB(){return new Promise(function(resolve,reject){
+  try{var r=indexedDB.open('RPDB',1);
+  r.onupgradeneeded=function(e){var d=e.target.result;
+    if(!d.objectStoreNames.contains('u')){var s=d.createObjectStore('u',{keyPath:'id',autoIncrement:true});s.createIndex('name','name',{unique:true})}
+    ['p','w','h','f','s','d','m','e','su','b'].forEach(function(n){if(!d.objectStoreNames.contains(n)){var s=d.createObjectStore(n,{keyPath:'id',autoIncrement:true});s.createIndex('uid','uid')}});
+  };r.onsuccess=function(e){db=e.target.result;resolve(db)};r.onerror=function(){reject(r.error)};r.onblocked=function(){reject(new Error('blocked'))}}catch(e){reject(e)}})}
+function dP(s,d){return new Promise(function(resolve,reject){var t=db.transaction(s,'readwrite'),o=t.objectStore(s);var r=d.id?o.put(d):o.add(d);r.onsuccess=function(){resolve(r.result)};r.onerror=function(){reject(r.error)}})}
+function dA(s){return new Promise(function(resolve,reject){var t=db.transaction(s,'readonly'),r=t.objectStore(s).getAll();r.onsuccess=function(){resolve(r.result)};r.onerror=function(){reject(r.error)}})}
+async function dU(s){var a=await dA(s);return a.filter(function(x){return x.uid===uid})}
+function dD(s,id){return new Promise(function(resolve,reject){var t=db.transaction(s,'readwrite');t.objectStore(s).delete(id);t.oncomplete=function(){resolve()};t.onerror=function(){reject(t.error)}})}
 
-// === DB ===
-let db,uid=null,simpleMode=false;
-function oDB(){return new Promise((resolve,reject)=>{
-  try{const r=indexedDB.open('ReptileDBV5',1);
-  r.onupgradeneeded=e=>{const d=e.target.result;
-    if(!d.objectStoreNames.contains('u')){const s=d.createObjectStore('u',{keyPath:'id',autoIncrement:true});s.createIndex('name','name',{unique:true})}
-    ['p','w','h','f','s','d','m','e','su','b','sc','tpl','st'].forEach(n=>{if(!d.objectStoreNames.contains(n)){const s=d.createObjectStore(n,{keyPath:'id',autoIncrement:true});s.createIndex('uid','uid')}});
-  };r.onsuccess=e=>{db=e.target.result;resolve(db)};r.onerror=()=>reject(r.error);r.onblocked=()=>reject(new Error('blocked'))}catch(e){reject(e)}})}
-function dP(s,d){return new Promise((resolve,reject)=>{const t=db.transaction(s,'readwrite'),o=t.objectStore(s);const r=d.id?o.put(d):o.add(d);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
-function dA(s){return new Promise((resolve,reject)=>{const t=db.transaction(s,'readonly'),r=t.objectStore(s).getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
-async function dU(s){return(await dA(s)).filter(x=>x.uid===uid)}
-function dD(s,id){return new Promise((resolve,reject)=>{const t=db.transaction(s,'readwrite');t.objectStore(s).delete(id);t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error)})}
+// ===== Crypto =====
+function sha(t){var d=new TextEncoder().encode(t);return crypto.subtle.digest('SHA-256',d).then(function(h){return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('')})}
 
-// === Toast ===
-function tst(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+// ===== Toast =====
+function tst(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2000)}
 
-// === Auth ===
-async function sL(){document.getElementById('login-s').style.display='block';document.getElementById('app-s').style.display='none';const u=await dA('u');const s=document.getElementById('lu');s.innerHTML='<option value="">选择用户</option>'+u.map(x=>`<option value="${x.id}">${x.name}</option>`).join('');if(u.length===1)s.value=u[0].id;document.getElementById('le').style.display='none'}
-async function doL(){const id=parseInt(document.getElementById('lu').value),pw=document.getElementById('lp').value,er=document.getElementById('le');if(!id){er.textContent='请选择用户';er.style.display='block';return}if(!pw){er.textContent='请输入密码';er.style.display='block';return}const u=(await dA('u')).find(x=>x.id===id);if(!u||u.ph!==await sha(pw)){er.textContent='密码错误';er.style.display='block';return}er.style.display='none';uid=id;localStorage.setItem('rps',JSON.stringify({uid,token:u.ph}));document.getElementById('hu').textContent=u.name;document.getElementById('login-s').style.display='none';document.getElementById('app-s').style.display='block';await rA()}
-function sR(){document.getElementById('rm').classList.add('show');['rn','rp1','rp2','rh'].forEach(id=>document.getElementById(id).value='');document.getElementById('re').style.display='none';document.getElementById('pb').style.width='0%'}
-function closeR(){document.getElementById('rm').classList.remove('show')}
-function ckP(){const p=document.getElementById('rp1').value;let s=0;if(p.length>=4)s++;if(p.length>=8)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/\d/.test(p))s++;const b=document.getElementById('pb');b.style.width=(s*20)+'%';b.style.background=['#e0e0e0','#ef5350','#ff9800','#8bc34a','#2e7d32'][s]}
-async function doR(){const n=document.getElementById('rn').value.trim(),p1=document.getElementById('rp1').value,p2=document.getElementById('rp2').value,h=document.getElementById('rh').value.trim(),er=document.getElementById('re');er.style.display='none';if(!n){er.textContent='请输入名字';er.style.display='block';return}if(p1.length<4){er.textContent='密码至少4位';er.style.display='block';return}if(p1!==p2){er.textContent='密码不一致';er.style.display='block';return}const u=await dA('u');if(u.find(x=>x.name===n)){er.textContent='名字已被使用';er.style.display='block';return}const nid=await dP('u',{name:n,ph:await sha(p1),hint:h,ca:new Date().toISOString().slice(0,10)});closeR();uid=nid;localStorage.setItem('rps',JSON.stringify({uid:nid,token:await sha(p1)}));document.getElementById('hu').textContent=n;document.getElementById('login-s').style.display='none';document.getElementById('app-s').style.display='block';await rA()}
-function doO(){uid=null;localStorage.removeItem('rps');document.getElementById('app-s').style.display='none';sL()}
-async function delA(){const u=(await dA('u')).find(x=>x.id===uid);if(!confirm(`注销"${u?.name}"？数据不可恢复！`))return;const pw=prompt('输入密码确认：');if(!pw||u.ph!==await sha(pw)){alert('密码错误');return}for(const s of ['p','w','h','f','s','d','m','e','su','b','sc','tpl']){const a=await dU(s);for(const i of a)await dD(s,i.id)}await dD('u',uid);doO()}
+// ===== Utils =====
+function fm(n){return String(n).padStart(2,'0')}
+function td(){var d=new Date();return d.getFullYear()+'-'+fm(d.getMonth()+1)+'-'+fm(d.getDate())}
+function sb(s){if(s==='健康')return'<span class="badge bg">健康</span>';if(s==='注意观察')return'<span class="badge by">注意观察</span>';if(s==='生病'||s==='治疗中')return'<span class="badge br">'+s+'</span>';return s||''}
+function pn(id,ps){var p=ps.find(function(x){return x.id===id});return p?p.name:'?'}
+var CT='defecation',BT='pairing';
 
-// === Settings ===
-function sM(){document.getElementById('mm').classList.add('show');dA('u').then(u=>{const x=u.find(y=>y.id===uid);document.getElementById('mun').textContent='👤 '+(x?x.name:'');document.getElementById('tsw').className='switch'+(localStorage.getItem('rp-dark')==='1'?' on':'');document.getElementById('ssw').className='switch'+(simpleMode?' on':'')})}
-function closeM(){document.getElementById('mm').classList.remove('show')}
-function tT(){const b=document.body;b.classList.toggle('dark');const on=b.classList.contains('dark');document.getElementById('tsw').className='switch'+(on?' on':'');localStorage.setItem('rp-dark',on?'1':'0')}
-function tSM(){simpleMode=!simpleMode;document.getElementById('ssw').className='switch'+(simpleMode?' on':'');localStorage.setItem('rp-simple',simpleMode?'1':'0');updSM()}
-function updSM(){document.querySelectorAll('.sm-hide').forEach(el=>el.style.display=simpleMode?'none':'')}
-async function cMD(){if(!confirm('清空所有数据？不可恢复！'))return;for(const s of ['p','w','h','f','s','d','m','e','su','b','sc']){const a=await dU(s);for(const i of a)await dD(s,i.id)}closeM();await rA();tst('数据已清空')}
+// ===== Auth =====
+async function lL(){
+  var u=await dA('u'),s=document.getElementById('lu');
+  s.innerHTML='<option value="">选择用户</option>'+u.map(function(x){return'<option value="'+x.id+'">'+x.name+'</option>'}).join('');
+  if(u.length===1)s.value=u[0].id
+}
+async function dL(){
+  var id=parseInt(document.getElementById('lu').value),pw=document.getElementById('lp').value,er=document.getElementById('le');
+  er.style.display='none';
+  if(!id){er.textContent='请选择用户';er.style.display='block';return}
+  if(!pw){er.textContent='请输入密码';er.style.display='block';return}
+  var u=(await dA('u')).find(function(x){return x.id===id});
+  if(!u||u.ph!==await sha(pw)){er.textContent='密码错误';er.style.display='block';return}
+  uid=id;localStorage.setItem('rps',JSON.stringify({uid:uid,token:u.ph}));
+  document.getElementById('hu').textContent=u.name;
+  document.getElementById('ls').style.display='none';
+  document.getElementById('as').style.display='block';
+  await rA()
+}
+function dO(){uid=null;localStorage.removeItem('rps');document.getElementById('as').style.display='none';document.getElementById('ls').style.display='block';lL()}
 
-// === Export/Import ===
-async function expD(){const d={v:5,t:new Date().toISOString(),pets:[],weights:[],healths:[],feedings:[],sheddings:[],customs:[],breedings:[],scores:[]};for(const s of ['p','w','h','f','s']){const a=await dU(s);const k=s==='p'?'pets':s==='w'?'weights':s==='h'?'healths':s==='f'?'feedings':'sheddings';d[k]=a.map(({id,uid:u,...r})=>r)}const cd=await dU('d'),cm=await dU('m'),ce=await dU('e'),csu=await dU('su');d.customs=[...cd,...cm,...ce,...csu].map(({id,uid:u,...r})=>r);const cb=await dU('b');d.breedings=cb.map(({id,uid:u,...r})=>r);const b=new Blob([JSON.stringify(d)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`reptile-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();tst('JSON导出成功')}
-function autoB(){expD()}
-async function impD(e){const f=e.target.files[0];if(!f)return;try{const t=await f.text(),d=JSON.parse(t);if(!d.pets)throw new Error('无效');if(!confirm(`导入${d.pets.length}只宠物？`))return;const m={};for(const p of d.pets){const n=await dP('p',{...p,uid});m[p.id||p._oldId]=n}const maps={weights:'w',healths:'h',feedings:'f',sheddings:'s'};for(const[k,v] of Object.entries(maps)){if(!d[k])continue;for(const r of d[k]){if(m[r.petId]!==undefined)await dP(v,{...r,petId:m[r.petId],uid})}}if(d.customs){for(const r of d.customs){const store=r.med?'m':r.temp!==undefined?'e':r.subtype?'su':'d';if(m[r.petId]!==undefined)await dP(store,{...r,petId:m[r.petId],uid})}}if(d.breedings){for(const r of d.breedings){const br={...r,uid};if(m[r.female]!==undefined)br.female=m[r.female];if(m[r.male]!==undefined)br.male=m[r.male];await dP('b',br)}}tst('导入成功');await rA()}catch(x){alert('失败:'+x.message)}e.target.value=''}
-async function expC(){
-  const pets=await dU('p'),ws=await dU('w'),fs=await dU('f'),hs=await dU('h'),ss=await dU('s'),ds=await dU('d'),ms=await dU('m'),es=await dU('e'),sus=await dU('su');
-  let csv='类型,宠物,日期,数值1,数值2,备注\n';
-  ws.forEach(w=>{const p=pets.find(x=>x.id===w.petId);csv+=`体重,${p?p.name:'?'},${w.date},${w.weight}g,,${w.notes||''}\n`});
-  fs.forEach(f=>{const p=pets.find(x=>x.id===f.petId);csv+=`喂食,${p?p.name:'?'},${f.date},${f.food||''},${f.amount||''},${f.completed?'完成':'未完成'}\n`});
-  hs.forEach(h=>{const p=pets.find(x=>x.id===h.petId);csv+=`健康,${p?p.name:'?'},${h.date},${h.status},,${h.notes||''}\n`});
-  ss.forEach(s=>{const p=pets.find(x=>x.id===s.petId);csv+=`蜕皮,${p?p.name:'?'},${s.date},${s.days||0}天,${s.isFirst?'首次':''},${s.notes||''}\n`});
-  ds.forEach(r=>{const p=pets.find(x=>x.id===r.petId);csv+=`排便,${p?p.name:'?'},${r.date},${r.status||''},,${r.notes||''}\n`});
-  ms.forEach(r=>{const p=pets.find(x=>x.id===r.petId);csv+=`用药,${p?p.name:'?'},${r.date},${r.med||''},${r.dose||''},${r.notes||''}\n`});
-  es.forEach(r=>{const p=pets.find(x=>x.id===r.petId);csv+=`环境,${p?p.name:'?'},${r.date},${r.temp||''}℃,${r.hum||''}%,${r.notes||''}\n`});
-  sus.forEach(r=>{const p=pets.find(x=>x.id===r.petId);csv+=`垫材,${p?p.name:'?'},${r.date},${r.subtype||''},,${r.notes||''}\n`});
-  const b=new Blob(['\ufeff'+csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`reptile-data-${new Date().toISOString().slice(0,10)}.csv`;a.click();tst('CSV导出成功')
+function sR(){document.getElementById('rm').classList.add('show');['rn','rp1','rp2','rh'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('re').style.display='none'}
+function cR(){document.getElementById('rm').classList.remove('show')}
+async function dR(){
+  var n=document.getElementById('rn').value.trim(),p1=document.getElementById('rp1').value,p2=document.getElementById('rp2').value,h=document.getElementById('rh').value.trim(),er=document.getElementById('re');
+  er.style.display='none';if(!n){er.textContent='请输入名字';er.style.display='block';return}if(p1.length<4){er.textContent='密码至少4位';er.style.display='block';return}if(p1!==p2){er.textContent='密码不一致';er.style.display='block';return}
+  var u=await dA('u');if(u.find(function(x){return x.name===n})){er.textContent='名字已被使用';er.style.display='block';return}
+  var nid=await dP('u',{name:n,ph:await sha(p1),hint:h,ca:new Date().toISOString().slice(0,10)});cR();
+  uid=nid;localStorage.setItem('rps',JSON.stringify({uid:nid,token:await sha(p1)}));
+  document.getElementById('hu').textContent=n;document.getElementById('ls').style.display='none';document.getElementById('as').style.display='block';await rA()
 }
 
-// === Draft Cache ===
-function saveDraft(key,data){try{sessionStorage.setItem('draft_'+key,JSON.stringify(data))}catch(e){}}
-function loadDraft(key){try{const d=sessionStorage.getItem('draft_'+key);return d?JSON.parse(d):null}catch(e){return null}}
-function clearDraft(key){try{sessionStorage.removeItem('draft_'+key)}catch(e){}}
+// ===== Password Reset =====
+async function sPH(){document.getElementById('pwd-m').classList.add('show');var u=await dA('u');document.getElementById('pwd-u').innerHTML='<option value="">选择用户</option>'+u.map(function(x){return'<option value="'+x.id+'">'+x.name+'</option>'}).join('');document.getElementById('pwd-h').style.display='none';document.getElementById('pwd-e').style.display='none'}
+function cPH(){document.getElementById('pwd-m').classList.remove('show')}
+async function onPwd(){var id=parseInt(document.getElementById('pwd-u').value),d=document.getElementById('pwd-h');if(!id){d.style.display='none';return}var u=(await dA('u')).find(function(x){return x.id===id});if(u&&u.hint){d.textContent='提示: '+u.hint;d.style.display='block'}else{d.textContent='未设置密码提示';d.style.display='block'}}
+async function dPR(){var id=parseInt(document.getElementById('pwd-u').value),p1=document.getElementById('pwd-n1').value,p2=document.getElementById('pwd-n2').value,er=document.getElementById('pwd-e');er.style.display='none';if(!id){er.textContent='请选择用户';er.style.display='block';return}if(p1.length<4){er.textContent='至少4位';er.style.display='block';return}if(p1!==p2){er.textContent='不一致';er.style.display='block';return}var u=(await dA('u')).find(function(x){return x.id===id});u.ph=await sha(p1);await dP('u',u);cPH();alert('密码已重设')}
 
-// === Lazy Image ===
-function lazyImg(src,alt){return src?`<img src="${src}" class="pet-avatar" loading="lazy" alt="${alt||''}">`:'<div class="pet-avatar" style="display:flex;align-items:center;justify-content:center;font-size:24px">🐍</div>'}
+// ===== Settings =====
+function sM(){document.getElementById('mm').classList.add('show');dA('u').then(function(u){var x=u.find(function(y){return y.id===uid});document.getElementById('mun').textContent='👤 '+(x?x.name:'');document.getElementById('tsw').className='switch'+(localStorage.getItem('rp-dark')==='1'?' on':'')})}
+function cM(){document.getElementById('mm').classList.remove('show')}
+function tT(){var b=document.body;b.classList.toggle('dark');var on=b.classList.contains('dark');document.getElementById('tsw').className='switch'+(on?' on':'');localStorage.setItem('rp-dark',on?'1':'0')}
+async function cMD(){if(!confirm('清空所有数据？不可恢复！'))return;['p','w','h','f','s','d','m','e','su','b'].forEach(async function(s){var a=await dU(s);a.forEach(async function(i){await dD(s,i.id)})});cM();await rA();tst('已清空')}
+function sCP(){cM();document.getElementById('chp-m').classList.add('show');['chp-o','chp-n1','chp-n2'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('chp-e').style.display='none'}
+function cCP(){document.getElementById('chp-m').classList.remove('show')}
+async function dCP(){var o=document.getElementById('chp-o').value,p1=document.getElementById('chp-n1').value,p2=document.getElementById('chp-n2').value,er=document.getElementById('chp-e');var u=(await dA('u')).find(function(x){return x.id===uid});if(!o||u.ph!==await sha(o)){er.textContent='当前密码错误';er.style.display='block';return}if(p1.length<4){er.textContent='至少4位';er.style.display='block';return}if(p1!==p2){er.textContent='不一致';er.style.display='block';return}u.ph=await sha(p1);await dP('u',u);localStorage.setItem('rps',JSON.stringify({uid:uid,token:u.ph}));cCP();alert('已修改')}
 
-// === Utils ===
-const fm=n=>String(n).padStart(2,'0');
-const td=()=>{const d=new Date();return `${d.getFullYear()}-${fm(d.getMonth()+1)}-${fm(d.getDate())}`};
-const sb=s=>{if(s==='健康')return'<span class="badge bg">健康</span>';if(s==='注意观察')return'<span class="badge by">注意观察</span>';if(s==='生病'||s==='治疗中')return'<span class="badge br">'+s+'</span>';return s||''}
-function pn(id,pets){const p=pets.find(x=>x.id===id);return p?p.name:'?'}
+// ===== Export/Import =====
+async function expD(){var d={pets:[],weights:[],healths:[],feedings:[],sheddings:[],customs:[],breedings:[]},maps={p:'pets',w:'weights',h:'healths',f:'feedings',s:'sheddings'};for(var k in maps){var a=await dU(k);d[maps[k]]=a.map(function(x){var r={};for(var key in x){if(key!=='id'&&key!=='uid')r[key]=x[key]}return r})}var cd=await dU('d'),cm=await dU('m'),ce=await dU('e'),csu=await dU('su');d.customs=[].concat(cd,cm,ce,csu).map(function(x){var r={};for(var key in x){if(key!=='id'&&key!=='uid')r[key]=x[key]}return r});var cb=await dU('b');d.breedings=cb.map(function(x){var r={};for(var key in x){if(key!=='id'&&key!=='uid')r[key]=x[key]}return r});var b=new Blob([JSON.stringify(d)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='reptile-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();tst('导出成功')}
+async function impD(e){var f=e.target.files[0];if(!f)return;try{var t=await f.text(),d=JSON.parse(t);if(!d.pets){alert('无效文件');return}if(!confirm('导入'+d.pets.length+'只宠物？'))return;var m={};for(var i=0;i<d.pets.length;i++){var p=d.pets[i];var n=await dP('p',{name:p.name,species:p.species||'',chip:p.chip||'无',birth:p.birth||'',tags:p.tags||'',photo:p.photo||'',notes:p.notes||'',uid:uid});m[p.id||p._oldId]=n}var mm={weights:'w',healths:'h',feedings:'f',sheddings:'s'};for(var k in mm){if(!d[k])continue;for(var j=0;j<d[k].length;j++){var r=d[k][j];if(m[r.petId]!==undefined)await dP(mm[k],{petId:m[r.petId],date:r.date,weight:r.weight||0,status:r.status||'',food:r.food||'',amount:r.amount||'',calcium:r.calcium||'',completed:r.completed!==false,days:r.days||0,isFirst:r.isFirst||false,notes:r.notes||'',uid:uid})}}if(d.customs){for(var j=0;j<d.customs.length;j++){var r=d.customs[j];var s=r.med?'m':r.temp!==undefined?'e':r.subtype?'su':'d';if(m[r.petId]!==undefined)await dP(s,{petId:m[r.petId],date:r.date,status:r.status||'',med:r.med||'',dose:r.dose||'',temp:r.temp||0,hum:r.hum||0,subtype:r.subtype||'',notes:r.notes||'',uid:uid})}}tst('导入成功');await rA()}catch(x){alert('失败: '+x.message)}e.target.value=''}
+async function expC(){var pets=await dU('p'),ws=await dU('w'),fs=await dU('f'),hs=await dU('h'),ss=await dU('s');var csv='类型,宠物,日期,数值1,数值2,备注\n';ws.forEach(function(w){var p=pets.find(function(x){return x.id===w.petId});csv+='体重,'+(p?p.name:'?')+','+w.date+','+w.weight+'g,,\n'});fs.forEach(function(f){var p=pets.find(function(x){return x.id===f.petId});csv+='喂食,'+(p?p.name:'?')+','+f.date+','+(f.food||'')+','+(f.amount||'')+',\n'});hs.forEach(function(h){var p=pets.find(function(x){return x.id===h.petId});csv+='健康,'+(p?p.name:'?')+','+h.date+','+h.status+',,\n'});ss.forEach(function(s){var p=pets.find(function(x){return x.id===s.petId});csv+='蜕皮,'+(p?p.name:'?')+','+s.date+','+s.days+'天,,\n'});var b=new Blob(['\ufeff'+csv],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='reptile-data-'+new Date().toISOString().slice(0,10)+'.csv';a.click();tst('CSV导出成功')}
 
-// === Score ===
-async function calcS(){const f=await dU('f');let s=0;for(const x of f)if(x.completed)s+=10;const sh=await dU('s');s+=sh.length*15;const h=await dU('h');s+=h.filter(x=>x.status==='健康').length*5;return s}
-function lv(s){if(s>=500)return{name:'金牌',color:'#ffd700',pct:100};if(s>=300)return{name:'银牌',color:'#c0c0c0',pct:(s/500)*100};if(s>=100)return{name:'铜牌',color:'#cd7f32',pct:(s/500)*100};return{name:'新手',color:'#aaa',pct:Math.max(5,(s/500)*100)}}
+// ===== Score =====
+async function calcS(){var f=await dU('f'),s=0;f.forEach(function(x){if(x.completed)s+=10});s+=(await dU('s')).length*15;s+=(await dU('h')).filter(function(x){return x.status==='健康'}).length*5;return s}
+function lv(s){if(s>=500)return{n:'金牌',c:'#ffd700',p:100};if(s>=300)return{n:'银牌',c:'#c0c0c0',p:(s/500)*100};if(s>=100)return{n:'铜牌',c:'#cd7f32',p:(s/500)*100};return{n:'新手',c:'#aaa',p:Math.max(5,(s/500)*100)}}
 
-// === Navigation ===
+// ===== Navigation =====
 function swT(name,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-  const pg=document.getElementById('pg-'+name);if(pg)pg.classList.add('active');if(el)el.classList.add('active');
-  const h={dash:loadD,pets:loadP,growth:()=>{loadPS();loadGD()},health:()=>{loadPS();loadHD()},feed:()=>{loadPS();loadFD();loadFT()},shed:()=>{loadPS();loadSD()},custom:()=>{loadPS();loadCD()},breeding:()=>{loadBD()},knowledge:loadK};
-  if(h[name])h[name]()
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('nav a').forEach(function(a){a.classList.remove('active')});
+  var pg=document.getElementById('pg-'+name);if(pg)pg.classList.add('active');if(el)el.classList.add('active');
+  if(name==='dash')loadD();if(name==='pets')loadP();if(name==='growth'){loadPS();loadGD()}if(name==='health'){loadPS();loadHD()}if(name==='feed'){loadPS();loadFD();loadFT()}if(name==='shed'){loadPS();loadSD()}if(name==='custom'){loadPS();loadCD()}if(name==='breeding')loadBD();if(name==='knowledge')loadK()
 }
-async function rA(){await loadD();await loadP();await loadPS();updSM();ckR()}
+async function rA(){await loadD();await loadP();await loadPS()}
 
-// === Dashboard ===
+// ===== Dashboard =====
 async function loadD(){
-  const pets=await dU('p'),hs=await dU('h'),fs=await dU('f');
+  var pets=await dU('p'),hs=await dU('h'),fs=await dU('f');
   document.getElementById('kt').textContent=pets.length;
-  const bad=new Set(hs.filter(h=>h.status==='生病'||h.status==='治疗中').map(h=>h.petId));
-  document.getElementById('ku').textContent=[...bad].filter(pid=>pets.find(p=>p.id===pid)).length;
-  const s=await calcS();document.getElementById('ks').textContent=s;
-  const l=lv(s);document.getElementById('sc').innerHTML=`<div class="fb"><span>等级:<strong>${l.name}</strong></span><span>${s}分</span></div><div class="score-bar"><div class="score-fill" style="width:${l.pct}%;background:${l.color}"></div></div><div style="font-size:10px;color:var(--g);margin-top:2px">距下一级还需${Math.max(0,(l.pct>=100?500:(Math.ceil(s/100)*100))-s)}分</div>`;
-  const rl=document.getElementById('rl');let rms=[];
-  for(const p of pets){
-    const lh=hs.filter(h=>h.petId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];if(lh&&(lh.status==='生病'||lh.status==='治疗中'))rms.push({n:p.name,m:'需要持续关注和治疗',t:'danger'});else if(lh&&lh.status==='注意观察')rms.push({n:p.name,m:'观察期',t:'warn'});
-    const lf=fs.filter(f=>f.petId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];if(!lf||(new Date(td())-new Date(lf.date))/86400000>3)rms.push({n:p.name,m:'超过3天未喂食',t:'warn'});
-  }
-  if(rms.length===0)rl.innerHTML='<div class="empty">一切正常</div>';else rl.innerHTML=rms.map(r=>`<div style="padding:6px;margin:3px 0;border-radius:8px;background:${r.t==='danger'?'#ffebee':'#fff8e1'};font-size:12px"><strong>${r.n}</strong> ${r.m}</div>`).join('');
-
-  const now=new Date();const tm=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,7);
-  const mf=fs.filter(f=>f.date.startsWith(tm)),mw=(await dU('w')).filter(w=>w.date.startsWith(tm));
-  document.getElementById('mst').innerHTML=`<div class="kpi-row"><div class="kpi"><div class="val">${mf.length}</div><div class="lbl">本月喂食</div></div><div class="kpi"><div class="val">${mf.filter(f=>f.completed).length}</div><div class="lbl">完成</div></div><div class="kpi"><div class="val">${mw.length}</div><div class="lbl">体重记录</div></div></div>`;
+  var bad=new Set(hs.filter(function(h){return h.status==='生病'||h.status==='治疗中'}).map(function(h){return h.petId}));
+  document.getElementById('ku').textContent=[].filter.call([...bad],function(pid){return pets.find(function(p){return p.id===pid})}).length;
+  var s=await calcS();document.getElementById('ks').textContent=s;
+  var l=lv(s);
+  var rl=document.getElementById('rl'),rms=[];
+  pets.forEach(function(p){
+    var lh=hs.filter(function(h){return h.petId===p.id}).sort(function(a,b){return b.date.localeCompare(a.date)})[0];
+    if(lh&&(lh.status==='生病'||lh.status==='治疗中'))rms.push({n:p.name,m:'需关注和治疗',t:'danger'});
+    else if(lh&&lh.status==='注意观察')rms.push({n:p.name,m:'观察期',t:'warn'});
+    var lf=fs.filter(function(f){return f.petId===p.id}).sort(function(a,b){return b.date.localeCompare(a.date)})[0];
+    if(!lf||(new Date(td())-new Date(lf.date))/86400000>3)rms.push({n:p.name,m:'超3天未喂',t:'warn'})
+  });
+  if(rms.length===0)rl.innerHTML='<div class="empty">一切正常</div>';
+  else rl.innerHTML=rms.map(function(r){return'<div style="padding:6px;margin:3px 0;border-radius:8px;background:'+(r.t==='danger'?'#ffebee':'#fff8e1')+';font-size:12px"><strong>'+r.n+'</strong> '+r.m+'</div>'}).join('');
+  var now=new Date(),tm=now.getFullYear()+'-'+fm(now.getMonth()+1);
+  document.getElementById('mst').innerHTML='<div class="kpi-row"><div class="kpi"><div class="v">'+fs.filter(function(f){return f.date.startsWith(tm)}).length+'</div><div class="l">本月喂食</div></div><div class="kpi"><div class="v">'+fs.filter(function(f){return f.date.startsWith(tm)&&f.completed}).length+'</div><div class="l">完成</div></div><div class="kpi"><div class="v">'+(await dU('w')).filter(function(w){return w.date.startsWith(tm)}).length+'</div><div class="l">体重记录</div></div></div>'
 }
-async function ckR(){if(!('Notification' in window)||Notification.permission!=='granted'){if(Notification.permission!=='denied'){document.getElementById('nb').style.display='flex';}return}document.getElementById('nb').style.display='none';const pets=await dU('p'),fs=await dU('f'),ts=td();for(const p of pets){const lf=fs.filter(f=>f.petId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];if(!lf||(new Date(ts)-new Date(lf.date))/86400000>3)new Notification('喂食提醒',{body:`${p.name}超过3天未喂食`})}}
-function eN(){if(!('Notification' in window)){alert('浏览器不支持通知');return}Notification.requestPermission().then(p=>{if(p==='granted'){document.getElementById('nb').style.display='none';ckR()}else alert('通知权限被拒绝')})}
 
-// === Pets ===
+// ===== Pets =====
 async function loadP(){
-  const pets=await dU('p'),c=document.getElementById('pl');if(pets.length===0){c.innerHTML='<div class="empty">还没有宠物</div>';document.getElementById('pet-tags').innerHTML='';return}
-  const allTags=new Set();pets.forEach(p=>{if(p.tags)p.tags.split(',').forEach(t=>allTags.add(t.trim()))});
-  document.getElementById('pet-tags').innerHTML=[...allTags].map(t=>`<span class="chip" onclick="filterPT('${t}',this)">${t}</span>`).join('');
-  c.innerHTML=pets.map(p=>`<div class="card"><div class="fb"><div style="display:flex;gap:10px;align-items:center">${p.photo?`<img src="${p.photo}" class="pet-avatar" loading="lazy" alt="${p.name||'宠物'}">`:'<div class="pet-avatar" style="display:flex;align-items:center;justify-content:center;font-size:24px">🐍</div>'}<div><strong>${p.name||'未命名'}</strong>${p.species?`<br><span class="tag">${p.species}</span>`:''}${p.tags?p.tags.split(',').map(t=>`<span class="tag">${t.trim()}</span>`).join(''):''}<div style="font-size:10px;color:var(--g)">${p.chip?'芯片:'+p.chip+' ':''}${p.birth||''}</div></div></div><div><button class="btn btn-sm" style="background:#e3f2fd" onclick="editP(${p.id})">编辑</button><button class="btn btn-sm btn-d" onclick="delP(${p.id})">删</button></div></div>${p.notes?`<div style="font-size:11px;color:var(--g);margin-top:6px">${p.notes}</div>`:''}</div>`).join('');
+  var pets=await dU('p'),c=document.getElementById('pl');
+  if(pets.length===0){c.innerHTML='<div class="empty">还没有宠物</div>';document.getElementById('pet-tags').innerHTML='';return}
+  var allTags=new Set();pets.forEach(function(p){if(p.tags)p.tags.split(',').forEach(function(t){allTags.add(t.trim())})});
+  document.getElementById('pet-tags').innerHTML=[...allTags].map(function(t){return'<span class="chip">'+t+'</span>'}).join('');
+  c.innerHTML=pets.map(function(p){return'<div class="card"><div class="fb"><div style="display:flex;gap:10px;align-items:center">'+(p.photo?'<img src="'+p.photo+'" style="width:48px;height:48px;border-radius:10px;object-fit:cover">':'<div style="width:48px;height:48px;border-radius:10px;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:24px">🐍</div>')+'<div><strong>'+p.name+'</strong>'+(p.species?'<br><span class="tag">'+p.species+'</span>':'')+'<div style="font-size:10px;color:var(--g)">'+(p.chip?'芯片:'+p.chip+' ':'')+(p.birth||'')+'</div></div></div><div><button class="btn btn-s" style="background:#e3f2fd" onclick="editP('+p.id+')">编辑</button> <button class="btn btn-s btn-d" onclick="delP('+p.id+')">删</button></div></div>'+(p.notes?'<div style="font-size:11px;color:var(--g);margin-top:6px">'+p.notes+'</div>':'')+'</div>'}).join('')
 }
-function sPM(id){document.getElementById('pm').classList.add('show');cPh();if(id){document.getElementById('pttl').textContent='编辑宠物';dU('p').then(pets=>{const p=pets.find(x=>x.id===id);if(!p)return;document.getElementById('pid').value=p.id;document.getElementById('pnm').value=p.name||'';document.getElementById('psp').value=p.species||'';document.getElementById('pch').value=p.chip||'';document.getElementById('pbth').value=p.birth||'';document.getElementById('ptags').value=p.tags||'';document.getElementById('pnt').value=p.notes||'';if(p.photo){document.getElementById('ppd').value=p.photo;document.getElementById('ppp').src=p.photo;document.getElementById('ppp').style.display='block';document.getElementById('cph').style.display='inline-block'}})}else{document.getElementById('pttl').textContent='添加宠物';const draft=loadDraft('pet');['pid','pnm','psp','pch','pbth','ptags','pnt'].forEach(fid=>document.getElementById(fid).value=draft?draft[fid]||'':'');['pnm','psp','pch','pbth','ptags','pnt'].forEach(fid=>document.getElementById(fid).oninput=()=>saveDraft('pet',{pnm:document.getElementById('pnm').value,psp:document.getElementById('psp').value,pch:document.getElementById('pch').value,pbth:document.getElementById('pbth').value,ptags:document.getElementById('ptags').value,pnt:document.getElementById('pnt').value}))}}
-async function saveP(){const id=document.getElementById('pid').value,n=document.getElementById('pnm').value.trim();if(!n){alert('请输入名称');return}const d={name:n,species:document.getElementById('psp').value,chip:document.getElementById('pch').value.trim()||'无',birth:document.getElementById('pbth').value,tags:document.getElementById('ptags').value.trim(),photo:document.getElementById('ppd').value,notes:document.getElementById('pnt').value.trim(),uid};if(id)d.id=parseInt(id);await dP('p',d);clearDraft('pet');closePM();await rA();tst('宠物已保存')}
-function closePM(){document.getElementById('pm').classList.remove('show')}
+function sPM(id){document.getElementById('pm').classList.add('show');cPh();if(id){document.getElementById('pt').textContent='编辑宠物';dU('p').then(function(pets){var p=pets.find(function(x){return x.id===id});if(!p)return;document.getElementById('pid').value=p.id;document.getElementById('pnm').value=p.name;document.getElementById('psp').value=p.species||'';document.getElementById('pch').value=p.chip||'';document.getElementById('pbth').value=p.birth||'';document.getElementById('ptags').value=p.tags||'';document.getElementById('pnt').value=p.notes||'';if(p.photo){document.getElementById('ppd').value=p.photo;document.getElementById('ppp').src=p.photo;document.getElementById('ppp').style.display='block';document.getElementById('cph-btn').style.display='inline-block'}})}else{document.getElementById('pt').textContent='添加宠物';['pid','pnm','psp','pch','pbth','ptags','pnt'].forEach(function(id){document.getElementById(id).value=''})}}
+function cPM(){document.getElementById('pm').classList.remove('show')}
+async function saveP(){var id=document.getElementById('pid').value,n=document.getElementById('pnm').value.trim();if(!n){alert('请输入名称');return}var d={name:n,species:document.getElementById('psp').value,chip:document.getElementById('pch').value.trim()||'无',birth:document.getElementById('pbth').value,tags:document.getElementById('ptags').value.trim(),photo:document.getElementById('ppd').value,notes:document.getElementById('pnt').value.trim(),uid:uid};if(id)d.id=parseInt(id);await dP('p',d);cPM();await rA();tst('已保存')}
 async function editP(id){sPM(id)}
-async function delP(id){if(!confirm('确定删除？所有相关记录也将清理。'))return;for(const s of ['w','h','f','s','d','m','e','su','b']){const a=await dU(s);for(const i of a)if(i.petId===id)await dD(s,i.id)}await dD('p',id);await rA();tst('宠物已删除')}
-function pPh(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{document.getElementById('ppd').value=ev.target.result;document.getElementById('ppp').src=ev.target.result;document.getElementById('ppp').style.display='block';document.getElementById('cph').style.display='inline-block'};r.readAsDataURL(f)}
-function cPh(){document.getElementById('ppd').value='';document.getElementById('ppp').style.display='none';document.getElementById('cph').style.display='none'}
+async function delP(id){if(!confirm('确定删除？'))return;['w','h','f','s','d','m','e','su','b'].forEach(async function(s){var a=await dU(s);a.forEach(async function(i){if(i.petId===id)await dD(s,i.id)})});await dD('p',id);await rA();tst('已删除')}
+function pPh(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){document.getElementById('ppd').value=ev.target.result;document.getElementById('ppp').src=ev.target.result;document.getElementById('ppp').style.display='block';document.getElementById('cph-btn').style.display='inline-block'};r.readAsDataURL(f)}
+function cPh(){document.getElementById('ppd').value='';document.getElementById('ppp').style.display='none';document.getElementById('cph-btn').style.display='none'}
 
-// === Pet Selects ===
-async function loadPS(){const pets=await dU('p'),o=pets.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');['wp','hp','fp','sp','cp','bp1','bp2','be1'].forEach(s=>{const el=document.getElementById(s);if(el)el.innerHTML='<option value="">选择</option>'+o})}
+// ===== Pet Selects =====
+async function loadPS(){var pets=await dU('p'),o=pets.map(function(p){return'<option value="'+p.id+'">'+p.name+'</option>'}).join('');['wp','hp','fp','sp','cp','bp1','bp2','be1'].forEach(function(s){var el=document.getElementById(s);if(el)el.innerHTML='<option value="">选择</option>'+o})}
 
-// === Growth ===
-let gc=null;
+// ===== Growth =====
+var gc=null;
 async function loadGD(){
-  const pets=await dU('p'),d1=document.getElementById('gd1').value,d2=document.getElementById('gd2').value;
-  const gps=document.getElementById('gps');gps.innerHTML='<span class="chip active" onclick="loadGD()">全部对比</span>'+pets.map(p=>`<span class="chip" onclick="loadGP(${p.id},this)">${p.name}</span>`).join('');
-  const ws=(await dU('w')).filter(w=>{if(d1&&w.date<d1)return false;if(d2&&w.date>d2)return false;return true}).sort((a,b)=>a.date.localeCompare(b.date));
-  const wl=document.getElementById('wl');if(ws.length===0){wl.innerHTML='<div class="empty">暂无</div>'}else{wl.innerHTML='<table><tr><th>日期</th><th>宠物</th><th>体重(g)</th><th>备注</th><th></th></tr>'+ws.map(w=>`<tr><td>${w.date}</td><td>${pn(w.petId,pets)}</td><td>${w.weight}</td><td>${w.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delW(${w.id})">删</button></td></tr>`).join('')+'</table>'}
+  var pets=await dU('p'),d1=document.getElementById('gd1').value,d2=document.getElementById('gd2').value;
+  var gps=document.getElementById('gps');gps.innerHTML='<span class="chip active" onclick="loadGD()">全部</span>'+pets.map(function(p){return'<span class="chip" onclick="loadGP('+p.id+',this)">'+p.name+'</span>'}).join('');
+  var ws=(await dU('w')).filter(function(w){if(d1&&w.date<d1)return false;if(d2&&w.date>d2)return false;return true}).sort(function(a,b){return a.date.localeCompare(b.date)});
+  var wl=document.getElementById('wl');if(ws.length===0){wl.innerHTML='<div class="empty">暂无</div>'}else{wl.innerHTML='<table><tr><th>日期</th><th>宠物</th><th>体重(g)</th><th></th></tr>'+ws.map(function(w){return'<tr><td>'+w.date+'</td><td>'+pn(w.petId,pets)+'</td><td>'+w.weight+'</td><td><button class="btn btn-s btn-d" onclick="delW('+w.id+')">删</button></td></tr>'}).join('')+'</table>'}
   if(gc){gc.destroy();gc=null}
-  if(ws.length>0&&typeof Chart!=='undefined'){
-    const datasets=[],colors=['#2e7d32','#ff9800','#2196f3','#9c27b0','#f44336','#00bcd4'];
-    const pIds=[...new Set(ws.map(w=>w.petId))];pIds.forEach((pid,i)=>{const d=ws.filter(w=>w.petId===pid);datasets.push({label:pn(pid,pets),data:d.map(w=>w.weight),borderColor:colors[i%6],backgroundColor:colors[i%6]+'20',fill:false,tension:0.3,pointRadius:4})});
-    gc=new Chart(document.getElementById('gc').getContext('2d'),{type:'line',data:{labels:[...new Set(ws.map(w=>w.date))].sort(),datasets},options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'体重(g)'}}}}});
-  }
+  if(ws.length>0){try{var ctx=document.getElementById('gc').getContext('2d');var ds=[],colors=['#2e7d32','#ff9800','#2196f3','#9c27b0','#f44336'];var pIds=[...new Set(ws.map(function(w){return w.petId}))];pIds.forEach(function(pid,i){var d=ws.filter(function(w){return w.petId===pid});ds.push({label:pn(pid,pets),data:d.map(function(w){return w.weight}),borderColor:colors[i%5],fill:false,tension:0.3,pointRadius:4})});gc=new Chart(ctx,{type:'line',data:{labels:[...new Set(ws.map(function(w){return w.date}))].sort(),datasets:ds},options:{responsive:true,maintainAspectRatio:false}})}catch(e){}}
 }
-async function loadGP(pid,el){el.classList.toggle('active');const pets=await dU('p');const ws=(await dU('w')).filter(w=>w.petId===pid).sort((a,b)=>a.date.localeCompare(b.date));if(gc){gc.destroy();gc=null}if(ws.length>0&&typeof Chart!=='undefined'){gc=new Chart(document.getElementById('gc').getContext('2d'),{type:'line',data:{labels:ws.map(w=>w.date),datasets:[{label:pn(pid,pets),data:ws.map(w=>w.weight),borderColor:'#2e7d32',fill:true,tension:0.3,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}})}
-}
-function sWM(){document.getElementById('wd').value=td();['wv','wnt'].forEach(id=>document.getElementById(id).value='');document.getElementById('wm').classList.add('show')}
-function closeWM(){document.getElementById('wm').classList.remove('show')}
-async function saveW(){const d={petId:parseInt(document.getElementById('wp').value),date:document.getElementById('wd').value,weight:parseFloat(document.getElementById('wv').value),notes:document.getElementById('wnt').value.trim(),uid};if(!d.petId||!d.date||isNaN(d.weight)){alert('填写完整');return}await dP('w',d);closeWM();loadGD();loadD()}
+function loadGP(pid,el){el.classList.toggle('active');dU('p').then(function(pets){dU('w').then(function(ws){ws=ws.filter(function(w){return w.petId===pid}).sort(function(a,b){return a.date.localeCompare(b.date)});if(gc){gc.destroy();gc=null}if(ws.length>0){try{gc=new Chart(document.getElementById('gc').getContext('2d'),{type:'line',data:{labels:ws.map(function(w){return w.date}),datasets:[{label:pn(pid,pets),data:ws.map(function(w){return w.weight}),borderColor:'#2e7d32',fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}})}catch(e){}}})})}
+function sWM(){document.getElementById('wd').value=td();document.getElementById('wv').value='';document.getElementById('wnt').value='';document.getElementById('wm').classList.add('show')}
+function cWM(){document.getElementById('wm').classList.remove('show')}
+async function saveW(){var d={petId:parseInt(document.getElementById('wp').value),date:document.getElementById('wd').value,weight:parseFloat(document.getElementById('wv').value),notes:document.getElementById('wnt').value.trim(),uid:uid};if(!d.petId||!d.date||isNaN(d.weight)){alert('填写完整');return}await dP('w',d);cWM();document.getElementById('growth-pet-select').value=d.petId;loadGD();loadD()}
 async function delW(id){if(!confirm('删除？'))return;await dD('w',id);loadGD();loadD()}
 
-// === Health ===
-let hc=null;
-async function loadHD(){const hs=(await dU('h')).sort((a,b)=>b.date.localeCompare(a.date)),pets=await dU('p');document.getElementById('hl').innerHTML=hs.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>状态</th><th>备注</th><th></th></tr>'+hs.map(h=>`<tr><td>${h.date}</td><td>${pn(h.petId,pets)}</td><td>${sb(h.status)}</td><td>${h.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delH(${h.id})">删</button></td></tr>`).join('')+'</table>';
-  if(hc){hc.destroy();hc=null}
-  const so={健康:3,注意观察:2,生病:1,治疗中:0};const recent=hs.slice(0,30).reverse();if(recent.length>1&&typeof Chart!=='undefined'){hc=new Chart(document.getElementById('hc').getContext('2d'),{type:'line',data:{labels:recent.map(h=>h.date),datasets:[{label:'健康趋势',data:recent.map(h=>so[h.status]||0),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.1)',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:recent.map(h=>h.status==='健康'?'#4caf50':h.status==='治疗中'?'#f44336':'#ff9800')}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:4,ticks:{callback:v=>['治疗中','生病','注意观察','健康',''][v]||''}}}})}
-}
+// ===== Health =====
+var hc=null;
+async function loadHD(){var hs=(await dU('h')).sort(function(a,b){return b.date.localeCompare(a.date)}),pets=await dU('p');document.getElementById('hl').innerHTML=hs.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>状态</th><th></th></tr>'+hs.map(function(h){return'<tr><td>'+h.date+'</td><td>'+pn(h.petId,pets)+'</td><td>'+sb(h.status)+'</td><td><button class="btn btn-s btn-d" onclick="delH('+h.id+')">删</button></td></tr>'}).join('')+'</table>'}
 function sHM(){document.getElementById('hd').value=td();document.getElementById('hnt').value='';document.getElementById('hm').classList.add('show')}
-function closeHM(){document.getElementById('hm').classList.remove('show')}
-async function saveH(){const d={petId:parseInt(document.getElementById('hp').value),date:document.getElementById('hd').value,status:document.getElementById('hs').value,notes:document.getElementById('hnt').value.trim(),uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('h',d);closeHM();loadHD();loadD()}
+function cHM(){document.getElementById('hm').classList.remove('show')}
+async function saveH(){var d={petId:parseInt(document.getElementById('hp').value),date:document.getElementById('hd').value,status:document.getElementById('hs').value,notes:document.getElementById('hnt').value.trim(),uid:uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('h',d);cHM();loadHD();loadD()}
 async function delH(id){if(!confirm('删除？'))return;await dD('h',id);loadHD();loadD()}
 
-// === Feeding ===
-let feedPage=0;
-async function loadFD(){const fs=(await dU('f')).sort((a,b)=>b.date.localeCompare(a.date)),pets=await dU('p');document.getElementById('fl').innerHTML=fs.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>食物</th><th>量</th><th>补钙</th><th>状态</th><th></th></tr>'+fs.map(f=>`<tr><td>${f.date}</td><td>${pn(f.petId,pets)}</td><td>${f.food||''}</td><td>${f.amount||''}</td><td>${f.calcium||''}</td><td>${f.completed?'<span class="badge bg">✓</span>':'<span class="badge by">✗</span>'}</td><td><button class="btn btn-sm btn-d" onclick="delF(${f.id})">删</button></td></tr>`).join('')+'</table>'}
-async function loadFT(){document.getElementById('feed-tpls').innerHTML='蟋蟀|面包虫|杜比亚|大麦虫|含D3钙粉|无D3钙粉|维生素'.split('|').map(t=>`<span class="chip" onclick="setFT('${t}')">${t}</span>`).join('')}
-function setFT(t){if(['蟋蟀','面包虫','杜比亚','大麦虫'].includes(t))document.getElementById('fft').value=t;else document.getElementById('fca').value=t}
-function sFM(){document.getElementById('fd').value=td();['fft','fam','fca','fnt'].forEach(id=>document.getElementById(id).value='');document.getElementById('fm').classList.add('show')}
-function closeFM(){document.getElementById('fm').classList.remove('show')}
-async function saveF(){const d={petId:parseInt(document.getElementById('fp').value),date:document.getElementById('fd').value,food:document.getElementById('fft').value,amount:document.getElementById('fam').value.trim(),calcium:document.getElementById('fca').value,completed:document.getElementById('fdo').value==='1',notes:document.getElementById('fnt').value.trim(),uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('f',d);closeFM();loadFD();loadD()}
+// ===== Feeding =====
+async function loadFD(){var fs=(await dU('f')).sort(function(a,b){return b.date.localeCompare(a.date)}),pets=await dU('p');document.getElementById('fl').innerHTML=fs.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>食物</th><th>量</th><th>补钙</th><th></th></tr>'+fs.map(function(f){return'<tr><td>'+f.date+'</td><td>'+pn(f.petId,pets)+'</td><td>'+(f.food||'')+'</td><td>'+(f.amount||'')+'</td><td>'+(f.calcium||'')+'</td><td><button class="btn btn-s btn-d" onclick="delF('+f.id+')">删</button></td></tr>'}).join('')+'</table>'}
+function loadFT(){document.getElementById('feed-tpls').innerHTML='蟋蟀|面包虫|杜比亚|大麦虫|含D3钙粉|无D3钙粉'.split('|').map(function(t){return'<span class="chip" onclick="setFT(\''+t+'\')">'+t+'</span>'}).join('')}
+function setFT(t){if(['蟋蟀','面包虫','杜比亚','大麦虫'].indexOf(t)>=0)document.getElementById('fft').value=t;else document.getElementById('fca').value=t}
+function sFM(){document.getElementById('fd').value=td();['fft','fam','fca','fnt'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('fm').classList.add('show')}
+function cFM(){document.getElementById('fm').classList.remove('show')}
+async function saveF(){var d={petId:parseInt(document.getElementById('fp').value),date:document.getElementById('fd').value,food:document.getElementById('fft').value,amount:document.getElementById('fam').value.trim(),calcium:document.getElementById('fca').value,completed:document.getElementById('fdo').value==='1',notes:document.getElementById('fnt').value.trim(),uid:uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('f',d);cFM();loadFD();loadD()}
 async function delF(id){if(!confirm('删除？'))return;await dD('f',id);loadFD();loadD()}
-async function sFBM(){const pets=await dU('p');const dt=prompt('日期:',td());if(!dt)return;const ids=prompt('输入宠物ID列表(逗号分隔):');if(!ids)return;const food=prompt('食物类型:');const amt=prompt('数量:');const done=confirm('是否已完成?');let count=0;for(const sid of ids.split(',')){const pid=parseInt(sid.trim());if(pets.find(p=>p.id===pid)){await dP('f',{petId:pid,date:dt,food,amount:amt,completed:done,notes:'',uid});count++}}tst(`批量添加${count}条`);loadFD();loadD()}
+async function sFBM(){var pets=await dU('p'),dt=prompt('日期:',td());if(!dt)return;var ids=prompt('输入宠物ID列表(逗号分隔):');if(!ids)return;var food=prompt('食物类型:'),amt=prompt('数量:'),done=confirm('已完成?'),count=0;ids.split(',').forEach(async function(sid){var pid=parseInt(sid.trim());if(pets.find(function(p){return p.id===pid})){await dP('f',{petId:pid,date:dt,food:food,amount:amt,completed:done,notes:'',uid:uid});count++}});setTimeout(function(){tst('批量添加'+count+'条');loadFD();loadD()},1000)}
 
-// === Shedding ===
-async function loadSD(){const ss=(await dU('s')).sort((a,b)=>b.date.localeCompare(a.date)),pets=await dU('p');document.getElementById('sl').innerHTML=ss.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>距上次(天)</th><th>首次?</th><th>备注</th><th></th></tr>'+ss.map(s=>`<tr><td>${s.date}</td><td>${pn(s.petId,pets)}</td><td>${s.days||'-'}</td><td>${s.isFirst?'<span class="badge bb">是</span>':'否'}</td><td>${s.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delS(${s.id})">删</button></td></tr>`).join('')+'</table>'}
-function sSM(){document.getElementById('sd').value=td();['sdy','snt'].forEach(id=>document.getElementById(id).value='');document.getElementById('sfi').value='0';document.getElementById('sm').classList.add('show')}
-function closeSM(){document.getElementById('sm').classList.remove('show')}
-async function saveS(){const d={petId:parseInt(document.getElementById('sp').value),date:document.getElementById('sd').value,days:parseInt(document.getElementById('sdy').value)||0,isFirst:document.getElementById('sfi').value==='1',notes:document.getElementById('snt').value.trim(),uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('s',d);closeSM();loadSD();loadD()}
+// ===== Shedding =====
+async function loadSD(){var ss=(await dU('s')).sort(function(a,b){return b.date.localeCompare(a.date)}),pets=await dU('p');document.getElementById('sl').innerHTML=ss.length===0?'<div class="empty">暂无</div>':'<table><tr><th>日期</th><th>宠物</th><th>天数</th><th>首次</th><th></th></tr>'+ss.map(function(s){return'<tr><td>'+s.date+'</td><td>'+pn(s.petId,pets)+'</td><td>'+(s.days||'-')+'</td><td>'+(s.isFirst?'是':'否')+'</td><td><button class="btn btn-s btn-d" onclick="delS('+s.id+')">删</button></td></tr>'}).join('')+'</table>'}
+function sSM(){document.getElementById('sd').value=td();document.getElementById('sdy').value='';document.getElementById('snt').value='';document.getElementById('sfi').value='0';document.getElementById('sm').classList.add('show')}
+function cSM(){document.getElementById('sm').classList.remove('show')}
+async function saveS(){var d={petId:parseInt(document.getElementById('sp').value),date:document.getElementById('sd').value,days:parseInt(document.getElementById('sdy').value)||0,isFirst:document.getElementById('sfi').value==='1',notes:document.getElementById('snt').value.trim(),uid:uid};if(!d.petId||!d.date){alert('填写完整');return}await dP('s',d);cSM();loadSD();loadD()}
 async function delS(id){if(!confirm('删除？'))return;await dD('s',id);loadSD();loadD()}
 
-// === Custom Records ===
-let customType='defecation';
-function swCT(t,el){customType=t;document.querySelectorAll('#custom-tabs .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');document.getElementById('ctype').value=t;['cf-d','cf-m','cf-e','cf-s'].forEach(id=>document.getElementById(id).style.display='none');if(t==='defecation')document.getElementById('cf-d').style.display='block';else if(t==='medication')document.getElementById('cf-m').style.display='block';else if(t==='environment')document.getElementById('cf-e').style.display='block';else document.getElementById('cf-s').style.display='block';loadCD()}
-async function loadCD(){const sm={defecation:'d',medication:'m',environment:'e',substrate:'su'};const rows=(await dU(sm[customType])).sort((a,b)=>b.date.localeCompare(a.date));const pets=await dU('p');let html='';
-  if(customType==='defecation')html='<table><tr><th>日期</th><th>宠物</th><th>状态</th><th>备注</th><th></th></tr>'+rows.map(r=>`<tr><td>${r.date}</td><td>${pn(r.petId,pets)}</td><td>${r.status||''}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delC('d',${r.id})">删</button></td></tr>`).join('')+'</table>';
-  else if(customType==='medication')html='<table><tr><th>日期</th><th>宠物</th><th>药品</th><th>剂量</th><th>备注</th><th></th></tr>'+rows.map(r=>`<tr><td>${r.date}</td><td>${pn(r.petId,pets)}</td><td>${r.med||''}</td><td>${r.dose||''}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delC('m',${r.id})">删</button></td></tr>`).join('')+'</table>';
-  else if(customType==='environment')html='<table><tr><th>日期</th><th>宠物</th><th>温度℃</th><th>湿度%</th><th>备注</th><th></th></tr>'+rows.map(r=>`<tr><td>${r.date}</td><td>${pn(r.petId,pets)}</td><td>${r.temp||''}</td><td>${r.hum||''}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delC('e',${r.id})">删</button></td></tr>`).join('')+'</table>';
-  else if(customType==='substrate')html='<table><tr><th>日期</th><th>宠物</th><th>垫材类型</th><th>备注</th><th></th></tr>'+rows.map(r=>`<tr><td>${r.date}</td><td>${pn(r.petId,pets)}</td><td>${r.subtype||''}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delC('su',${r.id})">删</button></td></tr>`).join('')+'</table>';
-  document.getElementById('cl').innerHTML=html||'<div class="empty">暂无记录</div>'
-}
-function sCM(){document.getElementById('ctype').value=customType;document.getElementById('cd').value=td();['cst','cmd','cmd1','ctp','chu','csu','cnt','cmnt','cent','csnt'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});['cf-d','cf-m','cf-e','cf-s'].forEach(id=>document.getElementById(id).style.display='none');if(customType==='defecation')document.getElementById('cf-d').style.display='block';else if(customType==='medication')document.getElementById('cf-m').style.display='block';else if(customType==='environment')document.getElementById('cf-e').style.display='block';else document.getElementById('cf-s').style.display='block';document.getElementById('cm').classList.add('show')}
-function closeCM(){document.getElementById('cm').classList.remove('show')}
-async function saveC(){const t=document.getElementById('ctype').value,sm={defecation:'d',medication:'m',environment:'e',substrate:'su'};const d={petId:parseInt(document.getElementById('cp').value),date:document.getElementById('cd').value,uid};if(!d.petId||!d.date){alert('填写完整');return}if(t==='defecation'){d.status=document.getElementById('cst').value;d.notes=document.getElementById('cnt').value.trim()}else if(t==='medication'){d.med=document.getElementById('cmd').value;d.dose=document.getElementById('cmd1').value;d.notes=document.getElementById('cmnt').value.trim()}else if(t==='environment'){d.temp=parseFloat(document.getElementById('ctp').value)||0;d.hum=parseFloat(document.getElementById('chu').value)||0;d.notes=document.getElementById('cent').value.trim()}else if(t==='substrate'){d.subtype=document.getElementById('csu').value;d.notes=document.getElementById('csnt').value.trim()}await dP(sm[t],d);closeCM();loadCD();loadD();tst('台账已保存')}
+// ===== Custom Records =====
+function swCT(t,el){CT=t;document.querySelectorAll('#custom-tabs .chip').forEach(function(c){c.classList.remove('active')});el.classList.add('active');document.getElementById('ctype').value=t;['cf-d','cf-m','cf-e','cf-s'].forEach(function(id){document.getElementById(id).style.display='none'});if(t==='defecation')document.getElementById('cf-d').style.display='block';else if(t==='medication')document.getElementById('cf-m').style.display='block';else if(t==='environment')document.getElementById('cf-e').style.display='block';else document.getElementById('cf-s').style.display='block';loadCD()}
+async function loadCD(){var sm={defecation:'d',medication:'m',environment:'e',substrate:'su'};var rows=(await dU(sm[CT])).sort(function(a,b){return b.date.localeCompare(a.date)}),pets=await dU('p'),html='';if(CT==='defecation')html='<table><tr><th>日期</th><th>宠物</th><th>状态</th><th></th></tr>'+rows.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.petId,pets)+'</td><td>'+(r.status||'')+'</td><td><button class="btn btn-s btn-d" onclick="delC(\'d\','+r.id+')">删</button></td></tr>'}).join('')+'</table>';else if(CT==='medication')html='<table><tr><th>日期</th><th>宠物</th><th>药品</th><th>剂量</th><th></th></tr>'+rows.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.petId,pets)+'</td><td>'+(r.med||'')+'</td><td>'+(r.dose||'')+'</td><td><button class="btn btn-s btn-d" onclick="delC(\'m\','+r.id+')">删</button></td></tr>'}).join('')+'</table>';else if(CT==='environment')html='<table><tr><th>日期</th><th>宠物</th><th>温度℃</th><th>湿度%</th><th></th></tr>'+rows.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.petId,pets)+'</td><td>'+(r.temp||'')+'</td><td>'+(r.hum||'')+'</td><td><button class="btn btn-s btn-d" onclick="delC(\'e\','+r.id+')">删</button></td></tr>'}).join('')+'</table>';else html='<table><tr><th>日期</th><th>宠物</th><th>垫材</th><th></th></tr>'+rows.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.petId,pets)+'</td><td>'+(r.subtype||'')+'</td><td><button class="btn btn-s btn-d" onclick="delC(\'su\','+r.id+')">删</button></td></tr>'}).join('')+'</table>';document.getElementById('cl').innerHTML=html||'<div class="empty">暂无</div>'}
+function sCM(){document.getElementById('ctype').value=CT;document.getElementById('cd').value=td();['cst','cmd','cmd1','ctp','chu','csu','cnt','cmnt','cent','csnt'].forEach(function(id){var el=document.getElementById(id);if(el)el.value=''});['cf-d','cf-m','cf-e','cf-s'].forEach(function(id){document.getElementById(id).style.display='none'});if(CT==='defecation')document.getElementById('cf-d').style.display='block';else if(CT==='medication')document.getElementById('cf-m').style.display='block';else if(CT==='environment')document.getElementById('cf-e').style.display='block';else document.getElementById('cf-s').style.display='block';document.getElementById('cm').classList.add('show')}
+function cCM(){document.getElementById('cm').classList.remove('show')}
+async function saveC(){var t=document.getElementById('ctype').value,sm={defecation:'d',medication:'m',environment:'e',substrate:'su'};var d={petId:parseInt(document.getElementById('cp').value),date:document.getElementById('cd').value,uid:uid};if(!d.petId||!d.date){alert('填写完整');return}if(t==='defecation'){d.status=document.getElementById('cst').value;d.notes=document.getElementById('cnt').value.trim()}else if(t==='medication'){d.med=document.getElementById('cmd').value;d.dose=document.getElementById('cmd1').value;d.notes=document.getElementById('cmnt').value.trim()}else if(t==='environment'){d.temp=parseFloat(document.getElementById('ctp').value)||0;d.hum=parseFloat(document.getElementById('chu').value)||0;d.notes=document.getElementById('cent').value.trim()}else{d.subtype=document.getElementById('csu').value;d.notes=document.getElementById('csnt').value.trim()}await dP(sm[t],d);cCM();loadCD();loadD();tst('已保存')}
 async function delC(s,id){if(!confirm('删除？'))return;await dD(s,id);loadCD();loadD()}
 
-// === Breeding ===
-let breedType='pairing';
-function swBT(t,el){breedType=t;document.querySelectorAll('#breeding-tabs .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');document.getElementById('btype').value=t;['bf-p','bf-e','bf-i'].forEach(id=>document.getElementById(id).style.display='none');if(t==='pairing')document.getElementById('bf-p').style.display='block';else if(t==='egg')document.getElementById('bf-e').style.display='block';else document.getElementById('bf-i').style.display='block';loadBD()}
-async function loadBD(){const rows=(await dU('b')).sort((a,b)=>b.date.localeCompare(a.date)),pets=await dU('p');const brs=rows.filter(r=>r.btype===breedType);let html='';
-  if(breedType==='pairing')html='<table><tr><th>日期</th><th>母</th><th>公</th><th>备注</th><th></th></tr>'+brs.map(r=>`<tr><td>${r.date}</td><td>${pn(r.female,pets)}</td><td>${pn(r.male,pets)}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delB(${r.id})">删</button></td></tr>`).join('')+'</table>';
-  else if(breedType==='egg')html='<table><tr><th>日期</th><th>母</th><th>数量</th><th>状态</th><th>备注</th><th></th></tr>'+brs.map(r=>`<tr><td>${r.date}</td><td>${pn(r.female,pets)}</td><td>${r.eggCount||''}</td><td>${r.eggStatus||''}</td><td>${r.notes||''}</td><td><button class="btn btn-sm btn-d" onclick="delB(${r.id})">删</button></td></tr>`).join('')+'</table>';
-  else if(breedType==='incubation')html='<table><tr><th>日期</th><th>温度℃</th><th>湿度%</th><th>天数</th><th>状态</th><th></th></tr>'+brs.map(r=>`<tr><td>${r.date}</td><td>${r.incTemp||''}</td><td>${r.incHum||''}</td><td>${r.incDays||''}</td><td>${r.incStatus||''}</td><td><button class="btn btn-sm btn-d" onclick="delB(${r.id})">删</button></td></tr>`).join('')+'</table>';
-  document.getElementById('bl').innerHTML=html||'<div class="empty">暂无记录</div>'
-}
-function sBRM(){document.getElementById('btype').value=breedType;document.getElementById('bd').value=td();['bf-p','bf-e','bf-i'].forEach(id=>document.getElementById(id).style.display='none');if(breedType==='pairing')document.getElementById('bf-p').style.display='block';else if(breedType==='egg'){document.getElementById('bf-e').style.display='block';dU('b').then(rows=>{const pets=dU('p');})}else{loadIncOpts();document.getElementById('bf-i').style.display='block'}document.getElementById('bm').classList.add('show')}
-function closeBM(){document.getElementById('bm').classList.remove('show')}
-async function loadIncOpts(){const eggs=await dU('b');const er=eggs.filter(e=>e.btype==='egg');document.getElementById('bi1').innerHTML='<option value="">选择产卵记录</option>'+er.map((e,i)=>`<option value="${i}">产卵#${i+1} ${e.date}</option>`).join('')}
-async function saveB(){const d={btype:document.getElementById('btype').value,date:document.getElementById('bd').value,uid};if(!d.date){alert('填写日期');return}if(d.btype==='pairing'){d.female=parseInt(document.getElementById('bp1').value);d.male=parseInt(document.getElementById('bp2').value);d.notes=document.getElementById('bnt').value.trim();if(!d.female||!d.male){alert('选择配对');return}}else if(d.btype==='egg'){d.female=parseInt(document.getElementById('be1').value);d.eggCount=parseInt(document.getElementById('be2').value)||0;d.eggStatus=document.getElementById('be3').value;d.notes=document.getElementById('bent').value.trim()}else if(d.btype==='incubation'){d.incTemp=parseFloat(document.getElementById('bi2').value)||0;d.incHum=parseFloat(document.getElementById('bi3').value)||0;d.incDays=parseInt(document.getElementById('bi4').value)||0;d.incStatus=document.getElementById('bi5').value;d.notes=document.getElementById('bint').value.trim()}await dP('b',d);closeBM();loadBD();loadD();tst('繁育记录已保存')}
+// ===== Breeding =====
+function swBT(t,el){BT=t;document.querySelectorAll('#breeding-tabs .chip').forEach(function(c){c.classList.remove('active')});el.classList.add('active');document.getElementById('btype').value=t;['bf-p','bf-e','bf-i'].forEach(function(id){document.getElementById(id).style.display='none'});if(t==='pairing')document.getElementById('bf-p').style.display='block';else if(t==='egg')document.getElementById('bf-e').style.display='block';else document.getElementById('bf-i').style.display='block';loadBD()}
+async function loadBD(){var rows=(await dU('b')).sort(function(a,b){return b.date.localeCompare(a.date)}),pets=await dU('p'),brs=rows.filter(function(r){return r.btype===BT}),html='';if(BT==='pairing')html='<table><tr><th>日期</th><th>母</th><th>公</th><th></th></tr>'+brs.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.female,pets)+'</td><td>'+pn(r.male,pets)+'</td><td><button class="btn btn-s btn-d" onclick="delB('+r.id+')">删</button></td></tr>'}).join('')+'</table>';else if(BT==='egg')html='<table><tr><th>日期</th><th>母</th><th>数量</th><th>状态</th><th></th></tr>'+brs.map(function(r){return'<tr><td>'+r.date+'</td><td>'+pn(r.female,pets)+'</td><td>'+(r.eggCount||'')+'</td><td>'+(r.eggStatus||'')+'</td><td><button class="btn btn-s btn-d" onclick="delB('+r.id+')">删</button></td></tr>'}).join('')+'</table>';else html='<table><tr><th>日期</th><th>温度℃</th><th>湿度%</th><th>天数</th><th>状态</th><th></th></tr>'+brs.map(function(r){return'<tr><td>'+r.date+'</td><td>'+(r.incTemp||'')+'</td><td>'+(r.incHum||'')+'</td><td>'+(r.incDays||'')+'</td><td>'+(r.incStatus||'')+'</td><td><button class="btn btn-s btn-d" onclick="delB('+r.id+')">删</button></td></tr>'}).join('')+'</table>';document.getElementById('bl').innerHTML=html||'<div class="empty">暂无</div>'}
+function sBRM(){document.getElementById('btype').value=BT;document.getElementById('bd').value=td();['bf-p','bf-e','bf-i'].forEach(function(id){document.getElementById(id).style.display='none'});if(BT==='pairing')document.getElementById('bf-p').style.display='block';else if(BT==='egg')document.getElementById('bf-e').style.display='block';else{document.getElementById('bf-i').style.display='block';dU('b').then(function(eggs){var er=eggs.filter(function(e){return e.btype==='egg'});document.getElementById('bi1').innerHTML='<option value="">选择产卵记录</option>'+er.map(function(e,i){return'<option value="'+i+'">产卵#'+(i+1)+' '+e.date+'</option>'}).join('')})}document.getElementById('bm').classList.add('show')}
+function cBM(){document.getElementById('bm').classList.remove('show')}
+async function saveB(){var d={btype:document.getElementById('btype').value,date:document.getElementById('bd').value,uid:uid};if(!d.date){alert('填写日期');return}if(d.btype==='pairing'){d.female=parseInt(document.getElementById('bp1').value);d.male=parseInt(document.getElementById('bp2').value);d.notes=document.getElementById('bnt').value.trim();if(!d.female||!d.male){alert('选择配对');return}}else if(d.btype==='egg'){d.female=parseInt(document.getElementById('be1').value);d.eggCount=parseInt(document.getElementById('be2').value)||0;d.eggStatus=document.getElementById('be3').value;d.notes=document.getElementById('bent').value.trim()}else{d.incTemp=parseFloat(document.getElementById('bi2').value)||0;d.incHum=parseFloat(document.getElementById('bi3').value)||0;d.incDays=parseInt(document.getElementById('bi4').value)||0;d.incStatus=document.getElementById('bi5').value;d.notes=document.getElementById('bint').value.trim()}await dP('b',d);cBM();loadBD();loadD();tst('已保存')}
 async function delB(id){if(!confirm('删除？'))return;await dD('b',id);loadBD();loadD()}
 
-// === Knowledge ===
-function loadK(){const species=[{n:'豹纹守宫',t:'28-32℃(热)/24-26℃(冷)',h:'30-40%',l:'UVB5.0,10-12h',w:'40-80g',s:'幼14-28天/成28-60天',p:'①底材勿用钙沙<br>②躲避穴+湿润盒<br>③蟋蟀/面包虫,钙粉2次/周'},{n:'鬃狮蜥',t:'35-40℃(热)/26-28℃(冷)',h:'30-40%',l:'UVB10.0,12-14h',w:'250-600g',s:'幼频繁/成减少',p:'①必须UVB灯<br>②幼70%虫+30%菜<br>③钙粉+D3每次喂食'},{n:'玉米蛇',t:'28-30℃(热)/22-24℃(冷)',h:'50-60%',l:'8-10h(无需UVB)',w:'300-800g',s:'30-60天',p:'①蜕皮后24h勿喂<br>②喂食后48h勿把玩<br>③盖紧箱盖'},{n:'龟类',t:'28-32℃(晒)/22-26℃(水)',h:'60-80%',l:'UVB5-10,10-12h',w:'视品种',s:'N/A',p:'①水质+过滤<br>②晒背台<br>③定期补钙+D3'}];document.getElementById('kc').innerHTML='<div class="card"><h3>📚 常见爬宠养护知识库</h3></div>'+species.map(s=>`<div class="card"><h3>🦎 ${s.n}</h3><table><tr><th>项目</th><th>推荐值</th></tr><tr><td>温度</td><td>${s.t}</td></tr><tr><td>湿度</td><td>${s.h}</td></tr><tr><td>光照</td><td>${s.l}</td></tr><tr><td>体重</td><td>${s.w}</td></tr><tr><td>蜕皮</td><td>${s.s}</td></tr><tr><td>注意事项</td><td>${s.p}</td></tr></table></div>`).join('')}
+// ===== Knowledge =====
+function loadK(){var s=[{n:'豹纹守宫',t:'28-32℃/24-26℃',h:'30-40%',l:'UVB5.0 10-12h',w:'40-80g',s:'幼14-28天/成28-60天'},{n:'鬃狮蜥',t:'35-40℃/26-28℃',h:'30-40%',l:'UVB10.0 12-14h',w:'250-600g',s:'幼频繁/成减少'},{n:'玉米蛇',t:'28-30℃/22-24℃',h:'50-60%',l:'8-10h',w:'300-800g',s:'30-60天'},{n:'龟类',t:'28-32℃/22-26℃',h:'60-80%',l:'UVB5-10 10-12h',w:'视品种',s:'N/A'}];document.getElementById('kc').innerHTML='<div class="card"><h3>📚 常见爬宠养护知识</h3></div>'+s.map(function(x){return'<div class="card"><h3>🦎 '+x.n+'</h3><table><tr><th>项目</th><th>推荐值</th></tr><tr><td>温度</td><td>'+x.t+'</td></tr><tr><td>湿度</td><td>'+x.h+'</td></tr><tr><td>光照</td><td>'+x.l+'</td></tr><tr><td>体重</td><td>'+x.w+'</td></tr><tr><td>蜕皮</td><td>'+x.s+'</td></tr></table></div>'}).join('')}
 
-// === Init ===
-document.getElementById('login-s').style.display='block';
-(async function i(){
+// ===== Init =====
+(async function(){
 try{
   await oDB();
-  if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
-  if(localStorage.getItem('rp-dark')==='1'){document.body.classList.add('dark')}
-  simpleMode=localStorage.getItem('rp-simple')==='1';updSM();
-  const saved=localStorage.getItem('rps');
-  if(saved){try{const{uid:sid,token}=JSON.parse(saved);const u=await dA('u');const x=u.find(y=>y.id===sid);if(x&&x.ph===token){uid=sid;document.getElementById('hu').textContent=x.name;document.getElementById('login-s').style.display='none';document.getElementById('app-s').style.display='block';await rA();setInterval(ckR,3600000);return}}catch(e){}}
-  await sL();
+  if(localStorage.getItem('rp-dark')==='1')document.body.classList.add('dark');
+  var saved=localStorage.getItem('rps');
+  if(saved){try{var s=JSON.parse(saved),u=await dA('u'),x=u.find(function(y){return y.id===s.uid});if(x&&x.ph===s.token){uid=s.uid;document.getElementById('hu').textContent=x.name;document.getElementById('ls').style.display='none';document.getElementById('as').style.display='block';await rA();return}}catch(e){}}
+  await lL();
 }catch(e){
-  document.getElementById('login-s').innerHTML='<div style="padding:40px;text-align:center"><h2>🦎 加载失败</h2><p style="color:#888;margin:10px 0">'+e.message+'</p><button onclick="location.reload()" style="padding:10px 30px;background:#2e7d32;color:#fff;border:none;border-radius:8px;font-size:16px">重新加载</button><p style="font-size:12px;color:#aaa;margin-top:20px">如持续失败，请清除浏览器数据后重试</p></div>';
+  document.getElementById('ls').innerHTML='<div style="padding:40px;text-align:center"><h2>加载失败</h2><p style="color:#888">'+e.message+'</p><button onclick="location.reload()" style="padding:10px 30px;background:#2e7d32;color:#fff;border:none;border-radius:8px;font-size:16px">重新加载</button></div>';
 }
 })();
 </script>
 <div style="text-align:center;padding:20px;font-size:10px;color:var(--g)">
   <a href="https://github.com/taikenle/reptile/issues" target="_blank" style="color:var(--p)">📝 反馈建议</a> &nbsp;|&nbsp;
-  <a href="javascript:void(0)" onclick="alert('v2.0 - 2025年7月\n\n新增功能:\n• 暗色/浅色主题切换\n• 自定义台账(排便/用药/环境/垫材)\n• 繁育管理(配对/产卵/孵化)\n• 多宠生长曲线叠加对比\n• 日期筛选+月度统计\n• 快捷喂食模板+批量操作\n• CSV/JSON双格式导出\n• 标签分组+拍照上传\n• 响应式移动端适配\n• PWA离线缓存+通知推送')" style="color:var(--g)">📋 更新日志</a>
+  <a href="javascript:void(0)" onclick="alert('v2.0 - 2025.07\n\n功能:\n- 多用户密码登录\n- 体重生长曲线\n- 健康追踪+趋势图\n- 喂食/蜕皮/台账/繁育\n- 暗色主题+极简模式\n- JSON/CSV导出\n- 拍照存档\n- 标签分组\n- 批量操作\n- 离线PWA')" style="color:var(--g)">📋 更新日志</a>
 </div>
 </body>
 </html>
