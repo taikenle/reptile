@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="爬宠管理">
+<title>安装爬宠管理</title>
+<style>
+:root{--primary:#2e7d32;--bg:#f0f4f0;--card:#fff;--text:#333;--grey:#666}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+.logo{font-size:72px;margin:30px 0 10px}
+h1{font-size:24px;color:var(--primary);margin-bottom:4px}
+.sub{color:var(--grey);font-size:14px;margin-bottom:24px}
+.steps{width:100%;max-width:420px}
+.step{background:var(--card);border-radius:14px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.step-num{width:36px;height:36px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;flex-shrink:0}
+.step-body h4{font-size:15px;margin-bottom:3px}
+.step-body p{font-size:12px;color:var(--grey);line-height:1.5}
+.btn{display:block;width:100%;max-width:420px;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:bold;cursor:pointer;text-align:center;text-decoration:none;margin-top:8px}
+.btn-green{background:var(--primary);color:#fff}
+.btn-outline{border:2px solid var(--primary);color:var(--primary);background:#fff}
+.platform-badge{display:inline-block;padding:4px 12px;border-radius:20px;background:#e8f5e9;color:var(--primary);font-size:13px;font-weight:bold;margin-bottom:16px}
+.footer{text-align:center;color:var(--grey);font-size:11px;margin-top:30px;padding-bottom:20px}
+</style>
+</head>
+<body>
+
+<div class="logo">🦎</div>
+<h1>爬宠饲养管理</h1>
+<p class="sub">多用户密码保护 · 生长曲线 · 喂食追踪</p>
+<div class="platform-badge" id="platform-hint">检测设备中...</div>
+
+<!-- Android -->
+<div id="guide-android" style="display:none;width:100%;max-width:420px">
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>打开 Chrome 浏览器</h4><p>复制下方链接，在 Chrome 中打开</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>登录你的账户</h4><p>首次使用选择"示例用户"，密码为空</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>添加到主屏幕</h4><p>Chrome 菜单 → 添加到主屏幕 → 完成</p></div>
+    </div>
+  </div>
+  <a class="btn btn-green" href="reptile-app.html">打开应用</a>
+  <p style="text-align:center;font-size:12px;color:var(--grey);margin-top:10px">打开后 Chrome 地址栏会显示安装图标</p>
+</div>
+
+<!-- iOS -->
+<div id="guide-ios" style="display:none;width:100%;max-width:420px">
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>在 Safari 中打开</h4><p>复制下方链接，在 Safari 浏览器打开</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>点击底部分享按钮</h4><p>底部工具栏中间的 ↑ 分享图标</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>添加到主屏幕</h4><p>滑动找到「添加到主屏幕」→ 点击添加</p></div>
+    </div>
+  </div>
+  <a class="btn btn-green" href="reptile-app.html">在 Safari 中打开</a>
+</div>
+
+<!-- Desktop -->
+<div id="guide-desktop" style="display:none;width:100%;max-width:420px">
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>浏览器打开应用</h4><p>点击下方按钮打开应用</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>创建桌面快捷方式</h4><p>Chrome：地址栏右侧 ⊕ 安装图标</p></div>
+    </div>
+  </div>
+  <a class="btn btn-green" href="reptile-app.html">打开应用</a>
+  <a class="btn btn-outline" href="https://github.com/taikenle/reptile/raw/main/ReptilePetManager.exe" style="margin-top:8px">下载 Windows 程序 (.exe)</a>
+</div>
+
+<div class="footer">
+  应用链接：<br>taikenle.github.io/reptile/reptile-app.html
+</div>
+
+<script>
+const ua=navigator.userAgent;
+const hint=document.getElementById('platform-hint');
+if(/Android/i.test(ua)){
+  hint.textContent='📱 Android 用户';
+  document.getElementById('guide-android').style.display='block';
+}else if(/iPhone|iPad|iPod/i.test(ua)){
+  hint.textContent='📱 iPhone 用户';
+  document.getElementById('guide-ios').style.display='block';
+}else{
+  hint.textContent='💻 电脑用户';
+  document.getElementById('guide-desktop').style.display='block';
+}
+</script>
+</body>
+</html>

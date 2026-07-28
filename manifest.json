@@ -1,0 +1,21 @@
+{
+  "name": "爬宠饲养管理",
+  "short_name": "爬宠管理",
+  "description": "爬宠专用饲养管理档案 — 多用户版",
+  "start_url": "./reptile-app.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#2e7d32",
+  "orientation": "portrait",
+  "icons": [{
+    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%232e7d32'/%3E%3Ctext x='96' y='130' font-size='120' text-anchor='middle'%3E🦎%3C/text%3E%3C/svg%3E",
+    "sizes": "192x192",
+    "type": "image/svg+xml",
+    "purpose": "any maskable"
+  }, {
+    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='85' fill='%232e7d32'/%3E%3Ctext x='256' y='345' font-size='320' text-anchor='middle'%3E🦎%3C/text%3E%3C/svg%3E",
+    "sizes": "512x512",
+    "type": "image/svg+xml",
+    "purpose": "any maskable"
+  }]
+}
