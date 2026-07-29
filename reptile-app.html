@@ -89,18 +89,32 @@ tr:hover{background:#fafafa}
 .mobile-nav a.active{color:var(--p)}.mobile-nav a span{font-size:16px}
 
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}.menu-toggle{display:block}
-  .mobile-nav{display:flex}.topbar{padding:10px 14px}
-  .content{padding:10px 12px 80px}
-  .stat-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  body{flex-direction:column}
+  .sidebar{transform:translateX(-100%);position:fixed;width:260px;min-width:260px;box-shadow:4px 0 20px rgba(0,0,0,.3)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:19}
+  .sidebar-overlay.show{display:block}
+  .main{margin-left:0}
+  .menu-toggle{display:block}
+  .mobile-nav{display:flex}
+  .topbar{padding:8px 12px}.topbar h2{font-size:14px}
+  .content{padding:8px 10px 80px}
+  .stat-row{grid-template-columns:repeat(2,1fr);gap:6px}
+  .stat{padding:12px 8px}.stat .v{font-size:22px}
   .form-row,.form-row-3{grid-template-columns:1fr}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  th,td{padding:6px 8px;font-size:11px}
+  .card{padding:12px}
+  .mc{width:95%;max-width:95%;max-height:90vh;border-radius:12px 12px 0 0;padding:14px}
+  .modal{align-items:flex-end}
+  #ls{max-width:100%;margin:20px auto;padding:0 10px}
 }
 </style>
 </head>
 <body>
 
 <!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="tS()"></div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo"><span>🦎</span>爬宠管理工作台</div>
   <nav class="sidebar-nav">
@@ -201,10 +215,7 @@ tr:hover{background:#fafafa}
   <a href="#growth" data-page="growth" onclick="swT('growth',this)"><span>📈</span>生长</a>
   <a href="#health" data-page="health" onclick="swT('health',this)"><span>🏥</span>健康</a>
   <a href="#feed" data-page="feed" onclick="swT('feed',this)"><span>🍽</span>喂食</a>
-  <a href="#shed" data-page="shed" onclick="swT('shed',this)"><span>🦎</span>蜕皮</a>
-  <a href="#custom" data-page="custom" onclick="swT('custom',this)"><span>📋</span>台账</a>
-  <a href="#breeding" data-page="breeding" onclick="swT('breeding',this)"><span>🥚</span>繁育</a>
-  <a href="#knowledge" data-page="knowledge" onclick="swT('knowledge',this)"><span>📚</span>知识</a>
+  <a href="#more" data-page="more" onclick="tS()"><span>☰</span>更多</a>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -300,7 +311,7 @@ var CT='defecation',BT='pairing';
 var pageTitles={dash:'数据概览',pets:'宠物档案',growth:'生长曲线',health:'健康管理',feed:'喂食记录',shed:'蜕皮记录',custom:'台账管理',breeding:'繁育管理',knowledge:'知识库'};
 
 // ===== sidebar toggle =====
-function tS(){document.getElementById('sidebar').classList.toggle('open')}
+function tS(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show')}
 
 // ===== Auth =====
 async function lL(){var u=await dA('u'),s=document.getElementById('lu');s.innerHTML='<option value="">选择用户</option>'+u.map(function(x){return'<option value="'+x.id+'">'+x.name+'</option>'}).join('');if(u.length===1)s.value=u[0].id}
@@ -352,7 +363,7 @@ function swT(name,el){
   document.getElementById('page-title').textContent=pageTitles[name]||'';
   document.querySelectorAll('.content .page').forEach(function(p){p.classList.remove('active')});
   var pg=document.getElementById('pg-'+name);if(pg)pg.classList.add('active');
-  if(window.innerWidth<768)document.getElementById('sidebar').classList.remove('open');
+  if(window.innerWidth<768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show')}
   if(name==='dash')loadD();if(name==='pets')loadP();if(name==='growth'){loadPS();loadGD()}if(name==='health'){loadPS();loadHD()}if(name==='feed'){loadPS();loadFD();loadFT()}if(name==='shed'){loadPS();loadSD()}if(name==='custom'){loadPS();loadCD()}if(name==='breeding')loadBD();if(name==='knowledge')loadK()
 }
 async function rA(){await loadD();await loadP();await loadPS()}
